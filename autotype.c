@@ -509,7 +509,6 @@ void AutoType_Update(core_crocods_t *core)
 				/* number of frames for key to be acknowledged */
 				core->AutoType.nFrames=1;
 
-                
 				ASCII_to_CPC(core, ch, TRUE);
 			}
 
