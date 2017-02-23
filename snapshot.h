@@ -30,7 +30,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+
+	int getSnapshotSize(core_crocods_t *core);    
     char *getSnapshot(core_crocods_t *core, int *len);
     
     void SauveSnap(core_crocods_t *core, char *Nom);

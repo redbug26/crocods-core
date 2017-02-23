@@ -23,6 +23,7 @@
 
 #include  "crocods.h"
 
+void ReadBackgroundGifInfo(u32 *w, u32 *h, unsigned char *from, int size);
 int ReadBackgroundGif(u16 *dest, char *filename);
 
 int ReadBackgroundGif16(u16 *dest, unsigned char *from, int size);

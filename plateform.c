@@ -35,18 +35,18 @@ extern unsigned int icons_gif_len;
 
 //static u16 AlphaBlend(u16 pixel, u16 backpixel, u16 opacity)
 //{
-//	// Blend image with background, based on opacity
-//	// Code optimization from http://www.gamedev.net/reference/articles/article817.asp
-//	// result = destPixel + ((srcPixel - destPixel) * ALPHA) / 256
+//  // Blend image with background, based on opacity
+//  // Code optimization from http://www.gamedev.net/reference/articles/article817.asp
+//  // result = destPixel + ((srcPixel - destPixel) * ALPHA) / 256
 //
-//	u16 dwAlphaRBtemp = (backpixel & 0x7c1f);
-//	u16 dwAlphaGtemp = (backpixel & 0x03e0);
-//	u16 dw5bitOpacity = (opacity >> 3);
+//  u16 dwAlphaRBtemp = (backpixel & 0x7c1f);
+//  u16 dwAlphaGtemp = (backpixel & 0x03e0);
+//  u16 dw5bitOpacity = (opacity >> 3);
 //
-//	return (
-//		((dwAlphaRBtemp + ((((pixel & 0x7c1f) - dwAlphaRBtemp) * dw5bitOpacity) >> 5)) & 0x7c1f) |
-//		((dwAlphaGtemp + ((((pixel & 0x03e0) - dwAlphaGtemp) * dw5bitOpacity) >> 5)) & 0x03e0) | 0x8000
-//	);
+//  return (
+//      ((dwAlphaRBtemp + ((((pixel & 0x7c1f) - dwAlphaRBtemp) * dw5bitOpacity) >> 5)) & 0x7c1f) |
+//      ((dwAlphaGtemp + ((((pixel & 0x03e0) - dwAlphaGtemp) * dw5bitOpacity) >> 5)) & 0x03e0) | 0x8000
+//  );
 //}
 
 
@@ -54,31 +54,31 @@ extern unsigned int icons_gif_len;
 #include "rom_mods.h"
 
 /*
- inline char toupper(const char toLower)
- {
- if ((toLower >= 'a') && (toLower <= 'z'))
- return char(toLower - 0x20);
- return toLower;
- }
+   inline char toupper(const char toLower)
+   {
+   if ((toLower >= 'a') && (toLower <= 'z'))
+   return char(toLower - 0x20);
+   return toLower;
+   }
  */
 
 int emulator_patch_ROM (core_crocods_t *core, u8 *pbROMlo)
 {
     u8 *pbPtr;
-    
+
     int CPCkeyboard=core->keyboardLayout;
-    
+
     if (CPCkeyboard<1) {
         return 0;
     }
-    
+
     // pbPtr = pbROMlo + 0x1d69; // location of the keyboard translation table on 664 or 6128
     pbPtr = pbROMlo + 0x1eef; // location of the keyboard translation table on 6128
     memcpy(pbPtr, cpc_keytrans[CPCkeyboard-1], 240); // patch the CPC OS ROM with the chosen keyboard layout
-    
+
     pbPtr = pbROMlo + 0x3800;
     memcpy(pbPtr, cpc_charset[CPCkeyboard-1], 2048); // add the corresponding character set
-    
+
     return 0;
 }
 
@@ -106,7 +106,7 @@ pfctResetZ80 ResetZ80;
 pfctSetIRQZ80 SetIRQZ80;
 
 static u8 bit_values[8] = {
-	   0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80
+    0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80
 };
 
 
@@ -122,8 +122,6 @@ u16 *kbdBuffer;
 int DebugMode = 0;
 int Cont = 1;
 #endif
-
-
 
 char *keyname0[] = {
     "CURSOR_UP", // = 0
@@ -215,44 +213,44 @@ char *keyname0[] = {
     "JOY_FIRE2",
     "SPARE",
     "DEL",
-    
+
     /* no key press */
     "NIL"
 };
 
 int RgbCPCdef[ 32 ] =  {
-    0x7F7F7F,                 // Blanc            (13)
-    0x7F7F7F,                 // Blanc            (13)
-    0x00FF7F,                 // Vert Marin       (19)
-    0xFFFF7F,                 // Jaune Pastel     (25)
-    0x00007F,                 // Bleu              (1)
-    0xFF007F,                 // Pourpre           (7)
-    0x007F7F,                 // Turquoise        (10)
-    0xFF7F7F,                 // Rose             (16)
-    0xFF007F,                 // Pourpre           (7)
-    0xFFFF00,                 // Jaune vif        (24)
-    0xFFFF00,                 // Jaune vif        (24)
-    0xFFFFFF,                 // Blanc Brillant   (26)
-    0xFF0000,                 // Rouge vif         (6)
-    0xFF00FF,                 // Magenta vif       (8)
-    0xFF7F00,                 // Orange           (15)
-    0xFF7FFF,                 // Magenta pastel   (17)
-    0x00007F,                 // Bleu              (1)
-    0x00FF7F,                 // Vert Marin       (19)
-    0x00FF00,                 // Vert vif         (18)
-    0x00FFFF,                 // Turquoise vif    (20)
-    0x000000,                 // Noir              (0)
-    0x0000FF,                 // Bleu vif          (2)
-    0x007F00,                 // Vert              (9)
-    0x007FFF,                 // Bleu ciel        (11)
-    0x7F007F,                 // Magenta           (4)
-    0x7FFF7F,                 // Vert pastel      (22)
-    0x7FFF00,                 // Vert citron      (21)
-    0x7FFFFF,                 // Turquoise pastel (23)
-    0x7F0000,                 // Rouge             (3)
-    0x7F00FF,                 // Mauve             (5)
-    0x7F7F00,                 // Jaune            (12)
-    0x7F7FFF                  // Bleu pastel      (14)
+    0x7F7F7F, // Blanc            (13)
+    0x7F7F7F, // Blanc            (13)
+    0x00FF7F, // Vert Marin       (19)
+    0xFFFF7F, // Jaune Pastel     (25)
+    0x00007F, // Bleu              (1)
+    0xFF007F, // Pourpre           (7)
+    0x007F7F, // Turquoise        (10)
+    0xFF7F7F, // Rose             (16)
+    0xFF007F, // Pourpre           (7)
+    0xFFFF00, // Jaune vif        (24)
+    0xFFFF00, // Jaune vif        (24)
+    0xFFFFFF, // Blanc Brillant   (26)
+    0xFF0000, // Rouge vif         (6)
+    0xFF00FF, // Magenta vif       (8)
+    0xFF7F00, // Orange           (15)
+    0xFF7FFF, // Magenta pastel   (17)
+    0x00007F, // Bleu              (1)
+    0x00FF7F, // Vert Marin       (19)
+    0x00FF00, // Vert vif         (18)
+    0x00FFFF, // Turquoise vif    (20)
+    0x000000, // Noir              (0)
+    0x0000FF, // Bleu vif          (2)
+    0x007F00, // Vert              (9)
+    0x007FFF, // Bleu ciel        (11)
+    0x7F007F, // Magenta           (4)
+    0x7FFF7F, // Vert pastel      (22)
+    0x7FFF00, // Vert citron      (21)
+    0x7FFFFF, // Turquoise pastel (23)
+    0x7F0000, // Rouge             (3)
+    0x7F00FF, // Mauve             (5)
+    0x7F7F00, // Jaune            (12)
+    0x7F7FFF // Bleu pastel      (14)
 };
 
 void TraceLigne8B512( core_crocods_t *core, int y, signed int AdrLo, int AdrHi );
@@ -278,12 +276,12 @@ RECT keypos[NBCPCKEY] = {
     {173,51,189,72}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
     {190,51,206,72}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
     {207,51,223,72}, //    0x50 | MOD_CPC_SHIFT,   // CPC_LEFT
-    {224,51,240,72},   //    0x41 | MOD_CPC_SHIFT,   // CPC_UP
-    {241,51,255,72},  // CP_RIGHT
-    
-    {0,73,14,94},    // (0)
-    {15,73,33,94},   //    0x80 | MOD_CPC_SHIFT,   // CPC_1
-    {34,73,52,94},   //    0x81 | MOD_CPC_SHIFT,   // CPC_2
+    {224,51,240,72}, //    0x41 | MOD_CPC_SHIFT,   // CPC_UP
+    {241,51,255,72}, // CP_RIGHT
+
+    {0,73,14,94}, // (0)
+    {15,73,33,94}, //    0x80 | MOD_CPC_SHIFT,   // CPC_1
+    {34,73,52,94}, //    0x81 | MOD_CPC_SHIFT,   // CPC_2
     {53,73,70,94}, //    0x71 | MOD_CPC_SHIFT,   // CPC_3
     {71,73,87,94}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
     {88,73,104,94}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
@@ -296,7 +294,7 @@ RECT keypos[NBCPCKEY] = {
     {207,73,223,94}, //    0x61 | MOD_CPC_SHIFT,   // CPC_LAMBDA
     {224,73,240,94}, //    0x60 | MOD_CPC_SHIFT,   // CPC_CLR
     {241,73,256,94}, //    0x51 | MOD_CPC_SHIFT,   // CPC_DEL
-    
+
     {0,95,19,116},
     {20,95,38,116}, //    0x83,                   // CPC_a
     {39,95,57,116}, //    0x73,                   // CPC_z
@@ -311,7 +309,7 @@ RECT keypos[NBCPCKEY] = {
     {208,95,224,116}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
     {225,95,241,116}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
     {242,95,256,138},//    0x22,                   // CPC_RETURN
-    
+
     {0,117,21,138},
     {22,117,40,138}, //    0x83,                   // CPC_A
     {41,117,59,138}, //    0x73,                   // CPC_S
@@ -325,8 +323,8 @@ RECT keypos[NBCPCKEY] = {
     {191,117,207,138}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
     {208,117,224,138}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
     {225,117,241,138}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
-    
-    {0,139,28,160},  // SHIFT
+
+    {0,139,28,160}, // SHIFT
     {29,139,47,160}, //    0x81 | MOD_CPC_SHIFT,   // CPC_2
     {48,139,66,160}, //    0x71 | MOD_CPC_SHIFT,   // CPC_3
     {67,139,85,160}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
@@ -339,7 +337,7 @@ RECT keypos[NBCPCKEY] = {
     {196,139,212,160}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
     {213,139,229,160}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
     {230,139,256,160}, //    0x60 | MOD_CPC_SHIFT,   // CPC_6
-    
+
     {0,161,57,182}, //    0x55,                   // CPC_j
     {58,161,95,182}, //    0x55,                   // CPC_j
     {96,161,207,182}, //    0x55,                   // CPC_j
@@ -347,86 +345,86 @@ RECT keypos[NBCPCKEY] = {
 };
 
 /*
- RECT keypos[NBCPCKEY] = {
-	{2,116,15,130},    // (0)
-	{16,116,29,130},   //    0x80 | MOD_CPC_SHIFT,   // CPC_1
-	{30,116,43,130},   //    0x81 | MOD_CPC_SHIFT,   // CPC_2
-	{44,116,57,130}, //    0x71 | MOD_CPC_SHIFT,   // CPC_3
-	{58,116,71,130}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
-	{72,116,85,130}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
-	{86,116,99,130}, //    0x60 | MOD_CPC_SHIFT,   // CPC_6
-	{100,116,113,130}, //    0x51 | MOD_CPC_SHIFT,   // CPC_7
-	{114,116,127,130}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
-	{128,116,141,130}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
-	{142,116,155,130}, // (10)  0x40 | MOD_CPC_SHIFT,   // CPC_0
-	{156,116,169,130}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
-	{170,116,183,130}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
-	{184,116,197,130}, //    0x60 | MOD_CPC_SHIFT,   // CPC_6
-	{198,116,211,130}, //    0x51 | MOD_CPC_SHIFT,   // CPC_7
-	{213,116,226,130}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
-	{227,116,240,130}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
-	{241,116,254,130}, // 17    0x40 | MOD_CPC_SHIFT,   // CPC_0
-	
-	{2,131,19,145},
-	{20,131,33,145}, //    0x83,                   // CPC_a
-	{34,131,47,145}, //    0x73,                   // CPC_z
-	{48,131,61,145}, //    0x71 | MOD_CPC_SHIFT,   // CPC_3
-	{62,131,75,145}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
-	{76,131,89,145}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
-	{90,131,103,145}, //    0x60 | MOD_CPC_SHIFT,   // CPC_6
-	{104,131,117,145}, //    0x51 | MOD_CPC_SHIFT,   // CPC_7
-	{118,131,131,145}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
-	{132,131,145,145}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
-	{146,131,159,145}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
-	{160,131,173,145}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
-	{174,131,187,145}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
-	{191,131,211,160},//    0x22,                   // CPC_RETURN
-	{213,131,226,145}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
-	{227,131,240,145}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
-	{241,131,254,145}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
-	
-	{2,146,22,160},
-	{23,146,36,160}, //    0x83,                   // CPC_a
-	{37,146,50,160}, //    0x73,                   // CPC_z
-	{51,146,64,160}, //    0x71 | MOD_CPC_SHIFT,   // CPC_3
-	{65,146,78,160}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
-	{79,146,92,160}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
-	{93,146,106,160}, //    0x60 | MOD_CPC_SHIFT,   // CPC_6
-	{107,146,120,160}, //    0x51 | MOD_CPC_SHIFT,   // CPC_7
-	{121,146,134,160}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
-	{135,146,148,160}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
-	{149,146,162,160}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
-	{163,146,176,160}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
-	{177,146,190,160}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
-	{213,146,226,160}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
-	{227,146,240,160}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
-	{241,146,254,160}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
-	
-	{2,161,29,175},
-	{30,161,43,175}, //    0x81 | MOD_CPC_SHIFT,   // CPC_2
-	{44,161,57,175}, //    0x71 | MOD_CPC_SHIFT,   // CPC_3
-	{58,161,71,175}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
-	{72,161,85,175}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
-	{86,161,99,175}, //    0x60 | MOD_CPC_SHIFT,   // CPC_6
-	{100,161,113,175}, //    0x51 | MOD_CPC_SHIFT,   // CPC_7
-	{114,161,127,175}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
-	{128,161,141,175}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
-	{142,161,155,175}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
-	{156,161,169,175}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
-	{170,161,183,175}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
-	{184,161,211,175}, //    0x60 | MOD_CPC_SHIFT,   // CPC_6
-	{213,161,227,175}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
-	{228,161,240,175}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
-	{241,161,254,175}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
-	
-	{1,176,34,190}, //    0x55,                   // CPC_j
-	{35,176,55,190}, //    0x55,                   // CPC_j
-	{56,176,167,190}, //    0x55,                   // CPC_j
-	{168,176,211,190}, //    0x55,                   // CPC_j
-	{213,176,227,190}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
-	{228,176,240,190}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
-	{241,176,254,190}
- };
+   RECT keypos[NBCPCKEY] = {
+        {2,116,15,130},    // (0)
+        {16,116,29,130},   //    0x80 | MOD_CPC_SHIFT,   // CPC_1
+        {30,116,43,130},   //    0x81 | MOD_CPC_SHIFT,   // CPC_2
+        {44,116,57,130}, //    0x71 | MOD_CPC_SHIFT,   // CPC_3
+        {58,116,71,130}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
+        {72,116,85,130}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
+        {86,116,99,130}, //    0x60 | MOD_CPC_SHIFT,   // CPC_6
+        {100,116,113,130}, //    0x51 | MOD_CPC_SHIFT,   // CPC_7
+        {114,116,127,130}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
+        {128,116,141,130}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
+        {142,116,155,130}, // (10)  0x40 | MOD_CPC_SHIFT,   // CPC_0
+        {156,116,169,130}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
+        {170,116,183,130}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
+        {184,116,197,130}, //    0x60 | MOD_CPC_SHIFT,   // CPC_6
+        {198,116,211,130}, //    0x51 | MOD_CPC_SHIFT,   // CPC_7
+        {213,116,226,130}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
+        {227,116,240,130}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
+        {241,116,254,130}, // 17    0x40 | MOD_CPC_SHIFT,   // CPC_0
+
+        {2,131,19,145},
+        {20,131,33,145}, //    0x83,                   // CPC_a
+        {34,131,47,145}, //    0x73,                   // CPC_z
+        {48,131,61,145}, //    0x71 | MOD_CPC_SHIFT,   // CPC_3
+        {62,131,75,145}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
+        {76,131,89,145}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
+        {90,131,103,145}, //    0x60 | MOD_CPC_SHIFT,   // CPC_6
+        {104,131,117,145}, //    0x51 | MOD_CPC_SHIFT,   // CPC_7
+        {118,131,131,145}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
+        {132,131,145,145}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
+        {146,131,159,145}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
+        {160,131,173,145}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
+        {174,131,187,145}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
+        {191,131,211,160},//    0x22,                   // CPC_RETURN
+        {213,131,226,145}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
+        {227,131,240,145}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
+        {241,131,254,145}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
+
+        {2,146,22,160},
+        {23,146,36,160}, //    0x83,                   // CPC_a
+        {37,146,50,160}, //    0x73,                   // CPC_z
+        {51,146,64,160}, //    0x71 | MOD_CPC_SHIFT,   // CPC_3
+        {65,146,78,160}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
+        {79,146,92,160}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
+        {93,146,106,160}, //    0x60 | MOD_CPC_SHIFT,   // CPC_6
+        {107,146,120,160}, //    0x51 | MOD_CPC_SHIFT,   // CPC_7
+        {121,146,134,160}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
+        {135,146,148,160}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
+        {149,146,162,160}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
+        {163,146,176,160}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
+        {177,146,190,160}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
+        {213,146,226,160}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
+        {227,146,240,160}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
+        {241,146,254,160}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
+
+        {2,161,29,175},
+        {30,161,43,175}, //    0x81 | MOD_CPC_SHIFT,   // CPC_2
+        {44,161,57,175}, //    0x71 | MOD_CPC_SHIFT,   // CPC_3
+        {58,161,71,175}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
+        {72,161,85,175}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
+        {86,161,99,175}, //    0x60 | MOD_CPC_SHIFT,   // CPC_6
+        {100,161,113,175}, //    0x51 | MOD_CPC_SHIFT,   // CPC_7
+        {114,161,127,175}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
+        {128,161,141,175}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
+        {142,161,155,175}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
+        {156,161,169,175}, //    0x70 | MOD_CPC_SHIFT,   // CPC_4
+        {170,161,183,175}, //    0x61 | MOD_CPC_SHIFT,   // CPC_5
+        {184,161,211,175}, //    0x60 | MOD_CPC_SHIFT,   // CPC_6
+        {213,161,227,175}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
+        {228,161,240,175}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
+        {241,161,254,175}, //    0x40 | MOD_CPC_SHIFT,   // CPC_0
+
+        {1,176,34,190}, //    0x55,                   // CPC_j
+        {35,176,55,190}, //    0x55,                   // CPC_j
+        {56,176,167,190}, //    0x55,                   // CPC_j
+        {168,176,211,190}, //    0x55,                   // CPC_j
+        {213,176,227,190}, //    0x50 | MOD_CPC_SHIFT,   // CPC_8
+        {228,176,240,190}, //    0x41 | MOD_CPC_SHIFT,   // CPC_9
+        {241,176,254,190}
+   };
  */
 
 
@@ -449,7 +447,7 @@ CPC_MAP keymap[NBCPCKEY] = {
     { CPC_CURSOR_LEFT },
     { CPC_CURSOR_DOWN },
     { CPC_CURSOR_RIGHT },
-    
+
     { CPC_ESC },
     { CPC_1 },
     { CPC_2 },
@@ -465,8 +463,8 @@ CPC_MAP keymap[NBCPCKEY] = {
     { CPC_HAT },
     { CPC_CLR },
     { CPC_DEL },
-    
-    { CPC_TAB },       //
+
+    { CPC_TAB }, //
     { CPC_Q },
     { CPC_W },
     { CPC_E },
@@ -480,8 +478,8 @@ CPC_MAP keymap[NBCPCKEY] = {
     { CPC_AT },
     { CPC_OPEN_SQUARE_BRACKET },
     { CPC_RETURN },
-   	
-    { CPC_CAPS_LOCK },   //
+
+    { CPC_CAPS_LOCK }, //
     { CPC_A },
     { CPC_S },
     { CPC_D },
@@ -494,8 +492,8 @@ CPC_MAP keymap[NBCPCKEY] = {
     { CPC_COLON },
     { CPC_SEMICOLON },
     { CPC_CLOSE_SQUARE_BRACKET },
-    
-    { CPC_SHIFT },   //
+
+    { CPC_SHIFT }, //
     { CPC_Z },
     { CPC_X },
     { CPC_C },
@@ -508,8 +506,8 @@ CPC_MAP keymap[NBCPCKEY] = {
     { CPC_FORWARD_SLASH },
     { CPC_BACKSLASH },
     { CPC_SHIFT },
-    
-    
+
+
     { CPC_CONTROL },
     { CPC_COPY },
     { CPC_SPACE },
@@ -527,7 +525,7 @@ struct kmenu *keyMenu;
 struct kmenu *AddMenu(struct kmenu *parent, char *title, int id, int x, int y)
 {
     struct kmenu *kcur;
-    
+
     kcur=(struct kmenu *)calloc(sizeof(struct kmenu),1);
     kcur->parent=parent;
     kcur->firstchild=NULL;
@@ -539,26 +537,26 @@ struct kmenu *AddMenu(struct kmenu *parent, char *title, int id, int x, int y)
     kcur->id = id;
     kcur->x = x;
     kcur->y = y;
-    
+
     if (kcur->parent->nbr==0) {
         kcur->parent->firstchild=kcur;
         kcur->parent->lastchild=kcur;
         kcur->parent->nbr=1;
     } else {
         struct kmenu *i, *i0;
-        
+
         i0=NULL;
         i=kcur->parent->firstchild;
         do {
             if (strcmp(kcur->title,i->title)<0) {
-                break;  // placer kcur juste avant i
+                break; // placer kcur juste avant i
             }
             i0=i;
             i=i->nextSibling;
         } while(i!=NULL);
-        
+
         i=NULL;
-        
+
         if (i==NULL) {
             kcur->previousSibling=kcur->parent->lastchild;
             kcur->parent->lastchild->nextSibling=kcur;
@@ -573,7 +571,7 @@ struct kmenu *AddMenu(struct kmenu *parent, char *title, int id, int x, int y)
         }
         kcur->parent->nbr++;
     }
-    
+
     return kcur;
 }
 
@@ -584,45 +582,45 @@ struct kmenu *AddMenu(struct kmenu *parent, char *title, int id, int x, int y)
 void SelectSNAP(void);
 
 /*
- void LireRom(struct kmenu *FM, int autostart)
- {
- u8 *rom=NULL;
- u32 romsize=0;
- char autofile[256];
- 
- myprintf("Loading %s", FM->object); // FM->title
- rom = FS_Readfile(FM->object, &romsize);
-	
- if (rom==NULL) {
- myprintf("Rom not found");
- return;
- }
-	
+   void LireRom(struct kmenu *FM, int autostart)
+   {
+   u8 *rom=NULL;
+   u32 romsize=0;
+   char autofile[256];
+
+   myprintf("Loading %s", FM->object); // FM->title
+   rom = FS_Readfile(FM->object, &romsize);
+
+   if (rom==NULL) {
+   myprintf("Rom not found");
+   return;
+   }
+
  #ifdef USE_SNAPSHOT
- if (!memcmp(rom, "MV - SNA", 8 )) {
- LireSnapshotMem(rom);
- currentsnap=0;
- strcpy(currentfile, FM->object);
- }
+   if (!memcmp(rom, "MV - SNA", 8 )) {
+   LireSnapshotMem(rom);
+   currentsnap=0;
+   strcpy(currentfile, FM->object);
+   }
  #endif
- if ( (!memcmp(rom, "MV - CPCEMU", 11)) || (!memcmp(rom,"EXTENDED", 8)) ) {
- autofile[0]=0;
- myprintf("Load Disk");
- LireDiskMem(rom, romsize, autofile);
- myprintf("Disk loaded");
- if ((autofile[0]!=0) && (autostart)) {
- char buffer[256];
- sprintf(buffer,"run\"%s\n", autofile);
- AutoType_SetString(buffer, TRUE);
- }
- currentsnap=0;
- strcpy(currentfile, FM->object);
- }
- free(rom);
- 
- 
- 
- }
+   if ( (!memcmp(rom, "MV - CPCEMU", 11)) || (!memcmp(rom,"EXTENDED", 8)) ) {
+   autofile[0]=0;
+   myprintf("Load Disk");
+   LireDiskMem(rom, romsize, autofile);
+   myprintf("Disk loaded");
+   if ((autofile[0]!=0) && (autostart)) {
+   char buffer[256];
+   sprintf(buffer,"run\"%s\n", autofile);
+   AutoType_SetString(buffer, TRUE);
+   }
+   currentsnap=0;
+   strcpy(currentfile, FM->object);
+   }
+   free(rom);
+
+
+
+   }
  */
 
 
@@ -631,38 +629,38 @@ void SelectSNAP(void)
 #ifdef USE_FAT
 #ifndef USE_CONSOLE
     u16 keys_pressed;
-    
+
     dmaCopy(menubufferlow, backBuffer, 256*192*2);
-    
+
     currentsnap=0;
-    
+
     // Wait key off
     do {
         keys_pressed = ~(REG_KEYINPUT);
     } while ((keys_pressed & (KEY_DOWN | KEY_UP | KEY_A | KEY_B | KEY_L | KEY_R))!=0);
-    
+
     DrawTextLeft(backBuffer, filefont, RGB15(31,31,0) | 0x8000, 15,  1, "Select Save Slot");
-    
+
     int x;
     RECT r;
-    
-    for(x=0;x<3;x++) {
+
+    for(x=0; x<3; x++) {
         char id[2];
         char *buf;
         char snap[256];
         int haveimg, havesnap;
-        
-        
+
+
         sprintf(snap, "/%s.%d", currentfile, currentsnap+1);
         buf=strchr(snap,'.');
         *buf='_';
         havesnap = FileExists(snap);
-        
+
         sprintf(snap, "/%s_i.%d", currentfile, currentsnap+1);
         buf=strchr(snap,'.');
         *buf='_';
         haveimg = FileExists(snap);
-        
+
         sprintf(id,"%d", x+1);
         SetRect(&r, 5+x*83, 130, 5+x*83+80, 50+130);
         FillRect(&r, RGB15((156>>3), (178>>3), (165>>3))|0x8000);
@@ -671,20 +669,20 @@ void SelectSNAP(void)
             DrawText(backBuffer, font, 7+x*83, 152, "Empty");
         }
     }
-    
+
     while(1) {
-        for(x=0;x<3;x++) {
+        for(x=0; x<3; x++) {
             SetRect(&r, 4+x*83, 129, 6+x*83+80, 51+130);
-            
+
             if (x==currentsnap) {
                 DrawRect(&r,  RGB15(0,31,31) | 0x8000);
             } else {
                 DrawRect(&r,  RGB15(16,0,0) | 0x8000);
             }
         }
-        
+
         keys_pressed = MyReadKey();
-        
+
         if ((keys_pressed & KEY_LEFT)==KEY_LEFT) {
             if (currentsnap==0) {
                 currentsnap=2;
@@ -699,11 +697,11 @@ void SelectSNAP(void)
                 currentsnap++;
             }
         }
-        
+
         if ((keys_pressed & KEY_A)==KEY_A) {
             break;
         }
-        
+
     }
 #endif
 #endif
@@ -725,9 +723,9 @@ void SetRect(RECT *R, int left, int top, int right, int bottom)
 void FillRect(RECT *R, u16 color)
 {
     int x,y;
-    
-    for(y=R->top;y<R->bottom;y++) {
-        for(x=R->left;x<R->right;x++) {
+
+    for(y=R->top; y<R->bottom; y++) {
+        for(x=R->left; x<R->right; x++) {
             backBuffer[x+y*256]=color;
         }
     }
@@ -736,12 +734,12 @@ void FillRect(RECT *R, u16 color)
 void DrawRect(RECT *R, u16 color)
 {
     int x,y;
-    
-    for(y=R->top;y<R->bottom;y++) {
+
+    for(y=R->top; y<R->bottom; y++) {
         backBuffer[R->left+y*256]=color;
         backBuffer[(R->right-1)+y*256]=color;
     }
-    for(x=R->left;x<R->right;x++) {
+    for(x=R->left; x<R->right; x++) {
         backBuffer[x+R->top*256]=color;
         backBuffer[x+(R->bottom-1)*256]=color;
     }
@@ -753,45 +751,45 @@ void DrawLift(RECT *max, RECT *dest, u16 coloron, u16 coloroff)
     RECT *r;
     RECT r0;
     /*
-     if ( (max->right-max->left) > (dest->right-dest->left) ) {
-     int x1,x2;
-     
-     int dr0,dr,dl,mr,ml;
-     
-     dr=dest->right;
-     if ( (max->bottom-max->top) > (dest->bottom-dest->top) ) {
-     dr0=dest->right-sizelift;
-     } else {
-     dr0=dr;
-     }
-     dl=dest->left;
-     mr=max->right;
-     ml=max->left;
-     
-     x1=dl+((dl-ml)*(dr0-dl))/(mr-ml);
-     x2=dr0-((mr-dr)*(dr0-dl))/(mr-ml);
-     
-     r=&r0;
-     
-     SetRect(r, x1, dest->top, x2, dest->top+sizelift);
-     FillRect(r, coloroff);
-     
-     SetRect(r, x1, dest->top, x2, dest->top+sizelift);
-     FillRect(r, coloron);
-     
-		   SetRect(r, x1, dest->top, x2, dest->top+sizelift);
-		   FillRect(r, coloroff);
-		   }
+       if ( (max->right-max->left) > (dest->right-dest->left) ) {
+       int x1,x2;
+
+       int dr0,dr,dl,mr,ml;
+
+       dr=dest->right;
+       if ( (max->bottom-max->top) > (dest->bottom-dest->top) ) {
+       dr0=dest->right-sizelift;
+       } else {
+       dr0=dr;
+       }
+       dl=dest->left;
+       mr=max->right;
+       ml=max->left;
+
+       x1=dl+((dl-ml)*(dr0-dl))/(mr-ml);
+       x2=dr0-((mr-dr)*(dr0-dl))/(mr-ml);
+
+       r=&r0;
+
+       SetRect(r, x1, dest->top, x2, dest->top+sizelift);
+       FillRect(r, coloroff);
+
+       SetRect(r, x1, dest->top, x2, dest->top+sizelift);
+       FillRect(r, coloron);
+
+                   SetRect(r, x1, dest->top, x2, dest->top+sizelift);
+                   FillRect(r, coloroff);
+                   }
      */
-    
+
     if ( (max->bottom-max->top) > (dest->bottom-dest->top) ) {
         int y1,y2;
-        
+
         int dt0,dt,db,mt,mb;
-        
+
         db=dest->bottom;
         dt=dest->top;
-        
+
         if ( (max->right-max->left) > (dest->right-dest->left) ) {
             dt0=dest->top+sizelift;
         } else {
@@ -799,32 +797,32 @@ void DrawLift(RECT *max, RECT *dest, u16 coloron, u16 coloroff)
         }
         mb=max->bottom;
         mt=max->top;
-        
+
         y1=dt0+((dt-mt)*(db-dt0))/(mb-mt);
         y2=db-((mb-db)*(db-dt))/(mb-mt);
-        
-        //	y2=y1+((db-dt)*(db-dt))/(mb-mt);
-        
+
+        //  y2=y1+((db-dt)*(db-dt))/(mb-mt);
+
         if (y2>mb) {
-            y2=mb;  // pas normal... mais ca arrive :(
+            y2=mb; // pas normal... mais ca arrive :(
         }
-        
+
         r=&r0;
-        
+
         if (dest->top<y1) {
             SetRect(r, dest->right - sizelift, dest->top, dest->right, y1);
             FillRect(r, coloroff);
         }
-        
+
         SetRect(r, dest->right - sizelift, y1, dest->right, y2);
         FillRect(r, coloron);
-        
+
         if (dest->bottom>y2) {
             SetRect(r, dest->right - sizelift, y2, dest->right, dest->bottom);
             FillRect(r, coloroff);
         }
     }
-    
+
     return;
 }
 #endif
@@ -838,60 +836,60 @@ void DrawLift(RECT *max, RECT *dest, u16 coloron, u16 coloroff)
 
 void SetPalette(core_crocods_t *core, int color)
 {
-    
+
     int i;
-    
+
     //    if ( (color==0) || (color==1) ) {
     //        core->lastcolour=color;
     //        return;
     //    }
-    
+
     if (color==-1) {
         color=core->lastcolour;
     }
-    
+
     if (color==1) {
         for ( i = 0; i < 32; i++ ) {
             int r = ( RgbCPCdef[ i ] >> 16 ) & 0xFF;
             int g = ( RgbCPCdef[ i ] >> 8 ) & 0xFF;
             int b = ( RgbCPCdef[ i ] >> 0 ) & 0xFF;
-            
+
             core->BG_PALETTE[i]=RGB15(r,g,b);
         }
         core->lastcolour=color;
     }
-    
+
     if (color==0) {
         for ( i = 0; i < 32; i++ ) {
             int r = ( RgbCPCdef[ i ] >> 16 ) & 0xFF;
             int g = ( RgbCPCdef[ i ] >> 8 ) & 0xFF;
             int b = ( RgbCPCdef[ i ] >> 0 ) & 0xFF;
-            
-            
+
+
             g=(r+g+b)/3;
             b=0;
             r=0;
-            
+
             core->BG_PALETTE[i]=RGB15(r,g,b);
         }
         core->lastcolour=color;
     }
     if (color==3) {
-        
+
         for ( i = 0; i < 32; i++ ) {
             int z;
             int r = ( RgbCPCdef[ i ] >> 16 ) & 0xFF;
             int g = ( RgbCPCdef[ i ] >> 8 ) & 0xFF;
             int b = ( RgbCPCdef[ i ] >> 0 ) & 0xFF;
-            
+
             z=(r+g+b)/3;
-            
+
             core->BG_PALETTE[i]=RGB15(z,z,z);
         }
     }
-    
+
     core->UpdateInk=1;
-    
+
 }
 
 void RedefineKey(int key)
@@ -899,15 +897,15 @@ void RedefineKey(int key)
 #ifndef USE_CONSOLE
     int x,y,n;
     dmaCopy(kbdBuffer, backBuffer, SCREEN_WIDTH * SCREEN_HEIGHT * 2);
-    
+
     keyEmul=3;
-    
-    while(((~IPC->buttons) & (1 << 6))==0);
-    
+
+    while(((~IPC->buttons) & (1 << 6))==0) ;
+
     x=IPC->touchXpx;
     y=IPC->touchYpx;
-    
-    for (n=0;n<NBCPCKEY;n++) {
+
+    for (n=0; n<NBCPCKEY; n++) {
         if ( (x>=keypos[n].left) && (x<=keypos[n].right) && (y>=keypos[n].top) && (y<=keypos[n].bottom) ) {
             keyown[key]=keymap[n].normal;
             break;
@@ -920,11 +918,11 @@ void RedefineKey(int key)
 void UpdateTitlePalette(struct kmenu *current)
 {
     /*
-     if (lastcolour==1) {
-     sprintf(current->title,"Monitor: [COLOR] - Green");
-     } else {
-     sprintf(current->title,"Monitor: Color - [GREEN]");
-     }
+       if (lastcolour==1) {
+       sprintf(current->title,"Monitor: [COLOR] - Green");
+       } else {
+       sprintf(current->title,"Monitor: Color - [GREEN]");
+       }
      */
 }
 
@@ -936,222 +934,222 @@ void UpdateTitlePalette(struct kmenu *current)
 int ExecuteMenu(core_crocods_t *core, int n, struct kmenu *current)
 {
     switch(n) {
-        case ID_SWITCH_MONITOR:
-            return 0;
-            break;
-        case ID_COLOR_MONITOR:
-            SetPalette(core, 1);
-            return 0;
-            break;
-        case ID_GREEN_MONITOR:
-            SetPalette(core, 0);
-            return 0;
-            break;
-        case ID_SCREEN_AUTO:
-            core->screenBufferWidth = 320;
-            core->screenBufferHeight = 200;
-            
-            core->MemBitmap_width = 320;
-            
-            core->resize=1;
-            core->DrawFct = TraceLigne8B512;
-            core->Regs1=0;
-            core->Regs2=0;
-            core->Regs6=0;
-            core->Regs7=0;
-            core->changeFilter=1;   // Flag to ask to the display to change the resolution
-            
-            return 1;
-            break;
-        case ID_SCREEN_320:
-            core->screenBufferWidth = 320;
-            core->screenBufferHeight = 200;
-            
-            core->MemBitmap_width = 320;
-            
-            core->resize=2;
-            core->DrawFct = TraceLigne8B512;
-            //     BG3_XDX = 320; // 256; // 360 - 54;  // 360 = DISPLAY_X // Taille d'affichage
-            //     BG3_CX = (XStart*4) << 8;
-            core->x0=(core->XStart*4);
-            core->y0=40;
-            core->maxy=64;
-            core->changeFilter=1;   // Flag to ask to the display to change the resolution
-            
-            return 0;
-            break;
-        case ID_SCREEN_NORESIZE:
-            core->resize=3;
-            core->DrawFct = TraceLigne8B512;
-            //     BG3_XDX = 256; // 256; // 360 - 54;  // 360 = DISPLAY_X // Taille d'affichage
-            //     BG3_CX = (XStart*4) << 8;
-            core->x0=(core->XStart*4);
-            core->y0=40;
-            core->maxy=80;
-            core->changeFilter=1;   // Flag to ask to the display to change the resolution
-            
-            return 0;
-            break;
-        case ID_SCREEN_OVERSCAN:
-            core->screenBufferWidth = 384;
-            core->screenBufferHeight = 272;
-            
-            core->resize=4;
-            core->DrawFct = TraceLigne8B512;
-            //   BG3_XDX = 384; // 256; // 360 - 54;  // 360 = DISPLAY_X // Taille d'affichage
-            //   BG3_CX = 0;
-            core->x0=(core->XStart*4);
-            core->y0=0;
-            core->changeFilter=1;   // Flag to ask to the display to change the resolution
-            
-            return 0;
-            break;
-        case ID_KEY_KEYBOARD:
-            core->keyEmul=2; //  Emul du clavier
-            return 0;
-            break;
-            
-        case ID_KEY_KEYPAD:
-            keyown[0]=CPC_CURSOR_UP;
-            keyown[1]=CPC_CURSOR_DOWN;
-            keyown[2]=CPC_CURSOR_LEFT;
-            keyown[3]=CPC_CURSOR_RIGHT;
-            keyown[4]=CPC_RETURN;
-            keyown[5]=CPC_SPACE;
-            keyown[6]=CPC_SPACE;
-            
-            core->keyEmul=3; //  Emul du clavier fleche
-            return 0;
-            break;
-        case ID_KEY_JOYSTICK:
-            keyown[0]=CPC_JOY_UP;
-            keyown[1]=CPC_JOY_DOWN;
-            keyown[2]=CPC_JOY_LEFT;
-            keyown[3]=CPC_JOY_RIGHT;
-            keyown[4]=CPC_RETURN;
-            keyown[5]=CPC_JOY_FIRE1;
-            keyown[6]=CPC_JOY_FIRE2;
-            
-            core->keyEmul=3; //  Emul du joystick
-            return 0;
-            break;
-        case ID_DISPFRAMERATE:
-            core->dispframerate=1;
-            return 0;
-            break;
-        case ID_NODISPFRAMERATE:
-            core->dispframerate=0;
-            return 0;
-            break;
-        case ID_RESET:
-            myprintf("Reset CPC");
-            ExecuteMenu(core, ID_MENU_EXIT, NULL);
-            ResetCPC(core);
-            return 0;
-            break;
-        case ID_SAVESNAP:
-        {
-            char *buf;
-            char snap[1024];
-            
-            sprintf(snap, "/%s.%d.sna", core->openFilename, core->currentsnap+1);
-            buf=strchr(snap,'.');
-            *buf='_';
-            SauveSnap(core, snap);
-            
-            return 1;
-            break;
-        }
-        case ID_FILE:
-            // LireRom(current,1);
-            return 1;
-            break;
-        case ID_DISK:
-            //LireRom(current,0);
-            return 1;
-            break;
-        case ID_REDEFINE_UP:
-            RedefineKey(0);
-            return 2;
-            break;
-        case ID_REDEFINE_DOWN:
-            RedefineKey(1);
-            return 2;
-            break;
-        case ID_REDEFINE_LEFT:
-            RedefineKey(2);
-            return 2;
-            break;
-        case ID_REDEFINE_RIGHT:
-            RedefineKey(3);
-            return 2;
-            break;
-        case ID_REDEFINE_START:
-            RedefineKey(4);
-            return 2;
-            break;
-        case ID_REDEFINE_A:
-            RedefineKey(5);
-            return 2;
-            break;
-        case ID_REDEFINE_B:
-            RedefineKey(6);
-            return 2;
-            break;
-        case ID_REDEFINE_X:
-            RedefineKey(7);
-            return 2;
-            break;
-        case ID_REDEFINE_Y:
-            RedefineKey(8);
-            return 2;
-            break;
-        case ID_REDEFINE_L:
-            RedefineKey(9);
-            return 2;
-            break;
-        case ID_REDEFINE_R:
-            RedefineKey(0);
-            return 2;
-            break;
-        case ID_HACK_TABCOUL:
-            core->hack_tabcoul = 1;
-            return 2;
-            break;
-        case ID_NOHACK_TABCOUL:
-            core->hack_tabcoul =  0;
-            return 2;
-            break;
-        case ID_ACTIVE_MAGNUM:
-            core->usemagnum=1;
-            break;
-        case ID_MENU_ENTER:
-            ExecuteMenu(core,ID_PAUSE_ENTER,NULL);
-            core->inMenu = 1;
-            break;
-        case ID_MENU_EXIT:
-            ExecuteMenu(core,ID_PAUSE_EXIT,NULL);
-            core->inMenu = 0;
-            break;
-        case ID_PAUSE_ENTER:
-            core->isPaused = 1;
-            SetPalette(core, 3);
-            break;
-        case ID_PAUSE_EXIT:
-            core->isPaused = 0;
-            core->inMenu = 0;
-            SetPalette(core, -1);
-            break;
-        case ID_DEBUG_ENTER:
-            ExecInstZ80 = ExecInstZ80_debug;
-            core->debug = 1;
-            break;
-        case ID_DEBUG_EXIT:
-            ExecInstZ80 = ExecInstZ80_orig;
-            core->debug = 0;
-            break;
-        default:
-            break;
+    case ID_SWITCH_MONITOR:
+        return 0;
+        break;
+    case ID_COLOR_MONITOR:
+        SetPalette(core, 1);
+        return 0;
+        break;
+    case ID_GREEN_MONITOR:
+        SetPalette(core, 0);
+        return 0;
+        break;
+    case ID_SCREEN_AUTO:
+        core->screenBufferWidth = 320;
+        core->screenBufferHeight = 200;
+
+        core->MemBitmap_width = 320;
+
+        core->resize=1;
+        core->DrawFct = TraceLigne8B512;
+        core->Regs1=0;
+        core->Regs2=0;
+        core->Regs6=0;
+        core->Regs7=0;
+        core->changeFilter=1; // Flag to ask to the display to change the resolution
+
+        return 1;
+        break;
+    case ID_SCREEN_320:
+        core->screenBufferWidth = 320;
+        core->screenBufferHeight = 200;
+
+        core->MemBitmap_width = 320;
+
+        core->resize=2;
+        core->DrawFct = TraceLigne8B512;
+        //     BG3_XDX = 320; // 256; // 360 - 54;  // 360 = DISPLAY_X // Taille d'affichage
+        //     BG3_CX = (XStart*4) << 8;
+        core->x0=(core->XStart*4);
+        core->y0=40;
+        core->maxy=64;
+        core->changeFilter=1; // Flag to ask to the display to change the resolution
+
+        return 0;
+        break;
+    case ID_SCREEN_NORESIZE:
+        core->resize=3;
+        core->DrawFct = TraceLigne8B512;
+        //     BG3_XDX = 256; // 256; // 360 - 54;  // 360 = DISPLAY_X // Taille d'affichage
+        //     BG3_CX = (XStart*4) << 8;
+        core->x0=(core->XStart*4);
+        core->y0=40;
+        core->maxy=80;
+        core->changeFilter=1; // Flag to ask to the display to change the resolution
+
+        return 0;
+        break;
+    case ID_SCREEN_OVERSCAN:
+        core->screenBufferWidth = 384;
+        core->screenBufferHeight = 272;
+
+        core->resize=4;
+        core->DrawFct = TraceLigne8B512;
+        //   BG3_XDX = 384; // 256; // 360 - 54;  // 360 = DISPLAY_X // Taille d'affichage
+        //   BG3_CX = 0;
+        core->x0=(core->XStart*4);
+        core->y0=0;
+        core->changeFilter=1; // Flag to ask to the display to change the resolution
+
+        return 0;
+        break;
+    case ID_KEY_KEYBOARD:
+        core->keyEmul=2; //  Emul du clavier
+        return 0;
+        break;
+
+    case ID_KEY_KEYPAD:
+        keyown[0]=CPC_CURSOR_UP;
+        keyown[1]=CPC_CURSOR_DOWN;
+        keyown[2]=CPC_CURSOR_LEFT;
+        keyown[3]=CPC_CURSOR_RIGHT;
+        keyown[4]=CPC_RETURN;
+        keyown[5]=CPC_SPACE;
+        keyown[6]=CPC_SPACE;
+
+        core->keyEmul=3; //  Emul du clavier fleche
+        return 0;
+        break;
+    case ID_KEY_JOYSTICK:
+        keyown[0]=CPC_JOY_UP;
+        keyown[1]=CPC_JOY_DOWN;
+        keyown[2]=CPC_JOY_LEFT;
+        keyown[3]=CPC_JOY_RIGHT;
+        keyown[4]=CPC_RETURN;
+        keyown[5]=CPC_JOY_FIRE1;
+        keyown[6]=CPC_JOY_FIRE2;
+
+        core->keyEmul=3; //  Emul du joystick
+        return 0;
+        break;
+    case ID_DISPFRAMERATE:
+        core->dispframerate=1;
+        return 0;
+        break;
+    case ID_NODISPFRAMERATE:
+        core->dispframerate=0;
+        return 0;
+        break;
+    case ID_RESET:
+        myprintf("Reset CPC");
+        ExecuteMenu(core, ID_MENU_EXIT, NULL);
+        ResetCPC(core);
+        return 0;
+        break;
+    case ID_SAVESNAP:
+    {
+        char *buf;
+        char snap[1024];
+
+        sprintf(snap, "/%s.%d.sna", core->openFilename, core->currentsnap+1);
+        buf=strchr(snap,'.');
+        *buf='_';
+        SauveSnap(core, snap);
+
+        return 1;
+        break;
+    }
+    case ID_FILE:
+        // LireRom(current,1);
+        return 1;
+        break;
+    case ID_DISK:
+        //LireRom(current,0);
+        return 1;
+        break;
+    case ID_REDEFINE_UP:
+        RedefineKey(0);
+        return 2;
+        break;
+    case ID_REDEFINE_DOWN:
+        RedefineKey(1);
+        return 2;
+        break;
+    case ID_REDEFINE_LEFT:
+        RedefineKey(2);
+        return 2;
+        break;
+    case ID_REDEFINE_RIGHT:
+        RedefineKey(3);
+        return 2;
+        break;
+    case ID_REDEFINE_START:
+        RedefineKey(4);
+        return 2;
+        break;
+    case ID_REDEFINE_A:
+        RedefineKey(5);
+        return 2;
+        break;
+    case ID_REDEFINE_B:
+        RedefineKey(6);
+        return 2;
+        break;
+    case ID_REDEFINE_X:
+        RedefineKey(7);
+        return 2;
+        break;
+    case ID_REDEFINE_Y:
+        RedefineKey(8);
+        return 2;
+        break;
+    case ID_REDEFINE_L:
+        RedefineKey(9);
+        return 2;
+        break;
+    case ID_REDEFINE_R:
+        RedefineKey(0);
+        return 2;
+        break;
+    case ID_HACK_TABCOUL:
+        core->hack_tabcoul = 1;
+        return 2;
+        break;
+    case ID_NOHACK_TABCOUL:
+        core->hack_tabcoul =  0;
+        return 2;
+        break;
+    case ID_ACTIVE_MAGNUM:
+        core->usemagnum=1;
+        break;
+    case ID_MENU_ENTER:
+        ExecuteMenu(core,ID_PAUSE_ENTER,NULL);
+        core->inMenu = 1;
+        break;
+    case ID_MENU_EXIT:
+        ExecuteMenu(core,ID_PAUSE_EXIT,NULL);
+        core->inMenu = 0;
+        break;
+    case ID_PAUSE_ENTER:
+        core->isPaused = 1;
+        SetPalette(core, 3);
+        break;
+    case ID_PAUSE_EXIT:
+        core->isPaused = 0;
+        core->inMenu = 0;
+        SetPalette(core, -1);
+        break;
+    case ID_DEBUG_ENTER:
+        ExecInstZ80 = ExecInstZ80_debug;
+        core->debug = 1;
+        break;
+    case ID_DEBUG_EXIT:
+        ExecInstZ80 = ExecInstZ80_orig;
+        core->debug = 0;
+        break;
+    default:
+        break;
     }
     return 1;
 }
@@ -1162,17 +1160,17 @@ int ExecuteMenu(core_crocods_t *core, int n, struct kmenu *current)
 u16 MyReadKey(void)
 {
     /*
-     u16 keys_pressed, my_keys_pressed;
-     
-     do {
-     keys_pressed = ~(REG_KEYINPUT);
-     } while ((keys_pressed & (KEY_LEFT | KEY_RIGHT | KEY_DOWN | KEY_UP | KEY_A | KEY_B | KEY_L | KEY_R))==0);
-     
-     my_keys_pressed = keys_pressed;
-     
-     do {
-     keys_pressed = ~(REG_KEYINPUT);
-     } while ((keys_pressed & (KEY_LEFT | KEY_RIGHT | KEY_DOWN | KEY_UP | KEY_A | KEY_B | KEY_L | KEY_R))!=0);
+       u16 keys_pressed, my_keys_pressed;
+
+       do {
+       keys_pressed = ~(REG_KEYINPUT);
+       } while ((keys_pressed & (KEY_LEFT | KEY_RIGHT | KEY_DOWN | KEY_UP | KEY_A | KEY_B | KEY_L | KEY_R))==0);
+
+       my_keys_pressed = keys_pressed;
+
+       do {
+       keys_pressed = ~(REG_KEYINPUT);
+       } while ((keys_pressed & (KEY_LEFT | KEY_RIGHT | KEY_DOWN | KEY_UP | KEY_A | KEY_B | KEY_L | KEY_R))!=0);
      */
     return 0; // my_keys_pressed;
 }
@@ -1180,24 +1178,24 @@ u16 MyReadKey(void)
 void InitCalcPoints( core_crocods_t *core )
 {
     int a, b, c, d, i;
-    
+
     // Pour le mode 0
     for ( i = 0; i < 256; i++ )
     {
         a = ( i >> 7 )
-        + ( ( i & 0x20 ) >> 3 )
-        + ( ( i & 0x08 ) >> 2 )
-        + ( ( i & 0x02 ) << 2 );
+            + ( ( i & 0x20 ) >> 3 )
+            + ( ( i & 0x08 ) >> 2 )
+            + ( ( i & 0x02 ) << 2 );
         b = ( ( i & 0x40 ) >> 6 )
-        + ( ( i & 0x10 ) >> 2 )
-        + ( ( i & 0x04 ) >> 1 )
-        + ( ( i & 0x01 ) << 3 );
+            + ( ( i & 0x10 ) >> 2 )
+            + ( ( i & 0x04 ) >> 1 )
+            + ( ( i & 0x01 ) << 3 );
         core->TabPointsDef[ 0 ][ i ][ 0 ] = (u8)a;
         core->TabPointsDef[ 0 ][ i ][ 1 ] = (u8)a;
         core->TabPointsDef[ 0 ][ i ][ 2 ] = (u8)b;
         core->TabPointsDef[ 0 ][ i ][ 3 ] = (u8)b;
     }
-    
+
     // Pour le mode 1
     for ( i = 0; i < 256; i++ )
     {
@@ -1210,7 +1208,7 @@ void InitCalcPoints( core_crocods_t *core )
         core->TabPointsDef[ 1 ][ i ][ 2 ] = (u8)c;
         core->TabPointsDef[ 1 ][ i ][ 3 ] = (u8)d;
     }
-    
+
     // Pour le mode 2
     for ( i = 0; i < 256; i++ )
     {
@@ -1219,7 +1217,7 @@ void InitCalcPoints( core_crocods_t *core )
         core->TabPointsDef[ 2 ][ i ][ 2 ] = ( i & 0x08 ) >> 3;
         core->TabPointsDef[ 2 ][ i ][ 3 ] = ( i & 0x02 ) >> 1;
     }
-    
+
     // Mode 3 = Mode 0 ???
     for ( i = 0; i < 256; i++ )
         for ( a = 0; a < 4; a++ )
@@ -1229,10 +1227,10 @@ void InitCalcPoints( core_crocods_t *core )
 void CalcPoints( core_crocods_t *core )
 {
     int i,j;
-    
+
     if ((core->lastMode>=0) && (core->lastMode<=3)) {
-        for (i=0;i<256;i++) {
-            for(j=0;j<4;j++) {
+        for (i=0; i<256; i++) {
+            for(j=0; j<4; j++) {
                 core->TabPoints[core->lastMode][i][j] = core->BG_PALETTE[core->TabCoul[ core->TabPointsDef[core->lastMode][i][j]]];
             }
             /* *(u32*)(&core->TabPoints[lastMode][i][0]) = (TabCoul[ core->TabPointsDef[lastMode][i][0] ] << 0) + (TabCoul[ core->TabPointsDef[lastMode][i][1] ] << 8) + (TabCoul[ core->TabPointsDef[lastMode][i][2] ] << 16) + (TabCoul[ core->TabPointsDef[lastMode][i][3] ] << 24);
@@ -1246,32 +1244,32 @@ void CalcPoints( core_crocods_t *core )
 
 
 /********************************************************* !NAME! **************
- * Nom : InitPlateforme
- ********************************************************** !PATHS! *************
- * !./V1!\!./V2!\!./V3!\!./V4!\Fonctions
- ********************************************************** !1! *****************
- *
- * Fichier     : !./FPTH\/FLE!, ligne : !./LN!
- *
- * Description : Initialisation diverses
- *
- * Résultat    : /
- *
- * Variables globales modifiées : JoyKey, clav
- *
- ********************************************************** !0! ****************/
+* Nom : InitPlateforme
+********************************************************** !PATHS! *************
+* !./V1!\!./V2!\!./V3!\!./V4!\Fonctions
+********************************************************** !1! *****************
+*
+* Fichier     : !./FPTH\/FLE!, ligne : !./LN!
+*
+* Description : Initialisation diverses
+*
+* Résultat    : /
+*
+* Variables globales modifiées : JoyKey, clav
+*
+********************************************************** !0! ****************/
 void InitPlateforme( core_crocods_t *core, unsigned short *screen, u16 screen_width )
 {
     core->MemBitmap=screen;
     core->MemBitmap_width=screen_width;
-    
+
     InitCalcPoints(core);
     CalcPoints(core);
     memset( core->clav, 0xFF, sizeof( core->clav ) );
     memset( cpckeypressed, 0, sizeof(cpckeypressed));
-    
+
     core->ipc.keys_pressed=0;
-    
+
     core->inMenu=0;
     core->isPaused=0;
 }
@@ -1283,20 +1281,20 @@ void updateScreenBuffer( core_crocods_t *core, unsigned short *screen, u16 scree
 }
 
 /********************************************************* !NAME! **************
- * Nom : Erreur
- ********************************************************** !PATHS! *************
- * !./V1!\!./V2!\!./V3!\!./V4!\Fonctions
- ********************************************************** !1! *****************
- *
- * Fichier     : !./FPTH\/FLE!, ligne : !./LN!
- *
- * Description : Affichage d'un message d'erreur
- *
- * Résultat    : /
- *
- * Variables globales modifiées : /
- *
- ********************************************************** !0! ****************/
+* Nom : Erreur
+********************************************************** !PATHS! *************
+* !./V1!\!./V2!\!./V3!\!./V4!\Fonctions
+********************************************************** !1! *****************
+*
+* Fichier     : !./FPTH\/FLE!, ligne : !./LN!
+*
+* Description : Affichage d'un message d'erreur
+*
+* Résultat    : /
+*
+* Variables globales modifiées : /
+*
+********************************************************** !0! ****************/
 void Erreur( char * Msg )
 {
     myprintf("Error: %s", Msg);
@@ -1304,20 +1302,20 @@ void Erreur( char * Msg )
 
 
 /********************************************************* !NAME! **************
- * Nom : Info
- ********************************************************** !PATHS! *************
- * !./V1!\!./V2!\!./V3!\!./V4!\Fonctions
- ********************************************************** !1! *****************
- *
- * Fichier     : !./FPTH\/FLE!, ligne : !./LN!
- *
- * Description : Affichage d'un message d'information
- *
- * Résultat    : /
- *
- * Variables globales modifiées : /
- *
- ********************************************************** !0! ****************/
+* Nom : Info
+********************************************************** !PATHS! *************
+* !./V1!\!./V2!\!./V3!\!./V4!\Fonctions
+********************************************************** !1! *****************
+*
+* Fichier     : !./FPTH\/FLE!, ligne : !./LN!
+*
+* Description : Affichage d'un message d'information
+*
+* Résultat    : /
+*
+* Variables globales modifiées : /
+*
+********************************************************** !0! ****************/
 void Info( char * Msg )
 {
     myprintf("Info: %s", Msg);
@@ -1333,210 +1331,212 @@ void TraceLigne8B512( core_crocods_t *core, int y, signed int AdrLo, int AdrHi )
 {
     // if (y>yMax) yMax=y;
     // if (y<yMin) yMin=y;
-    
+
     y-=core->y0;
-    
+
     if ((y<0) || (y>=272)) { // A verifier (200?)
         return;
     }
-    
-    if ((!core->hack_tabcoul) && (core->UpdateInk==1)) {    // It's would be beter to put before each lines
+
+    if ((!core->hack_tabcoul) && (core->UpdateInk==1)) { // It's would be beter to put before each lines
         CalcPoints(core);
     }
-    
+
     updated=1;
-    
+
     u16 *p;
-    
+
     p = (u16*)core->MemBitmap;
     p += (y*core->MemBitmap_width);
-    
+
     //    for (int i=0;i<384;i++) {
     //        p[i]=rand()&0xFFFF;
     //    }
     //    return;
-    
+
     if (core->lastMode!=2) {
         if ( AdrLo < 0 ) {
             if ((core->resize!=1) && (core->resize!=2)) {
                 int x;
-                for (x=0;x<384;x++) {
+                for (x=0; x<384; x++) {
                     p[x]=core->BG_PALETTE[core->TabCoul[ 16 ]];
                 }
             }
         } else {
             int x;
-            
+
             if (core->resize==4) {
-                for(x=0;x<core->XStart*4;x++) {
+                for(x=0; x<core->XStart*4; x++) {
                     *p = core->BG_PALETTE[core->TabCoul[ 16 ]];
                     p++;
                 }
             } if (core->resize==2) {
-                for(x=0;x<(core->XStart-8)*4;x++) {
+                for(x=0; x<(core->XStart-8)*4; x++) {
                     *p = core->BG_PALETTE[core->TabCoul[ 16 ]];
                     p++;
                 }
             } else {
                 // p+=XStart*4;
             }
-            
+
             for (x = core->XStart; x < core->XEnd; x++ ) {
                 u16 *tab = &(core->TabPoints[ core->lastMode ][ core->MemCPC[ ( AdrLo & 0x7FF ) | AdrHi ] ][0]);
                 memcpy(p,tab,4*sizeof(u16));
                 p+=4;
                 AdrLo++;
             }
-            
+
             if (core->resize==4) {
-                for(x=0;x<(96-core->XEnd)*4;x++) {
+                for(x=0; x<(96-core->XEnd)*4; x++) {
                     *p = core->BG_PALETTE[core->TabCoul[ 16 ]];
                     p++;
                 }
             } else if (core->resize==2) {
-                for(x=0;x<(88-core->XEnd)*4;x++) {
+                for(x=0; x<(88-core->XEnd)*4; x++) {
                     *p = core->BG_PALETTE[core->TabCoul[ 16 ]];
                     p++;
                 }
             }
         }
-        
-    } else {    // If mode 2
+
+    } else { // If mode 2
         //        core->BG_PALETTE[0]=0;
-        
+
         p += (y*core->MemBitmap_width);
-        
+
         if ( AdrLo < 0 ) {
             if ((core->resize!=1) && (core->resize!=2)) {
                 int x;
-                for (x=0;x<384*2;x++) {
+                for (x=0; x<384*2; x++) {
                     p[x]=core->BG_PALETTE[core->TabCoul[ 16 ]];
                 }
             }
         } else {
             int x;
-            
+
             if (core->resize==4) {
-                for(x=0;x<core->XStart*8;x++) {
+                for(x=0; x<core->XStart*8; x++) {
                     *p = core->BG_PALETTE[core->TabCoul[ 16 ]];
                     p++;
                 }
             } if (core->resize==2) {
-                for(x=0;x<(core->XStart-8)*8;x++) {
+                for(x=0; x<(core->XStart-8)*8; x++) {
                     *p = core->BG_PALETTE[core->TabCoul[ 16 ]];
                     p++;
                 }
             } else {
                 // p+=XStart*4;
             }
-            
+
             for (x = core->XStart; x < core->XEnd; x++ ) {
                 u8 car = core->MemCPC[ ( AdrLo & 0x7FF ) | AdrHi ];
                 int i;
-                
-                for (i=0;i<8;i++) {
+
+                for (i=0; i<8; i++) {
                     *(p+7-i) = core->BG_PALETTE[core->TabCoul[car&1]];
                     car = (car>>1);
                 }
                 p+=8;
                 AdrLo++;
             }
-            
+
             if (core->resize==4) {
-                for(x=0;x<(96-core->XEnd)*8;x++) {
+                for(x=0; x<(96-core->XEnd)*8; x++) {
                     *p = core->BG_PALETTE[core->TabCoul[ 16 ]];
                     p++;
                 }
             } else if (core->resize==2) {
-                for(x=0;x<(88-core->XEnd)*8;x++) {
+                for(x=0; x<(88-core->XEnd)*8; x++) {
                     *p = core->BG_PALETTE[core->TabCoul[ 16 ]];
                     p++;
                 }
             }
         }
-        
-        
+
+
     }
-    
+
 }
 
 /********************************************************* !NAME! **************
- * Nom : UpdateScreen
- ********************************************************** !PATHS! *************
- * !./V1!\!./V2!\!./V3!\!./V4!\Fonctions
- ********************************************************** !1! *****************
- *
- * Fichier     : !./FPTH\/FLE!, ligne : !./LN!
- *
- * Description : Affiche l'écran du CPC
- *
- * Résultat    : /
- *
- * Variables globales modifiées : /
- *
- ********************************************************** !0! ****************/
+* Nom : UpdateScreen
+********************************************************** !PATHS! *************
+* !./V1!\!./V2!\!./V3!\!./V4!\Fonctions
+********************************************************** !1! *****************
+*
+* Fichier     : !./FPTH\/FLE!, ligne : !./LN!
+*
+* Description : Affiche l'écran du CPC
+*
+* Résultat    : /
+*
+* Variables globales modifiées : /
+*
+********************************************************** !0! ****************/
 void UpdateScreen( core_crocods_t *core )
 {
-    
+
     frame++;
-    
-    if (core->resize==1) {       // Auto resize ?
+
+    if (core->resize==1) { // Auto resize ?
         if ((core->RegsCRTC[2]!=core->Regs2) || (core->RegsCRTC[6]!=core->Regs6) || (core->RegsCRTC[1]!=core->Regs1) || (core->RegsCRTC[7]!=core->Regs7)) {
             int x1,x2, y1,y2;
             int height;
-            
+
             x1 = max( ( 50 - core->RegsCRTC[2] ) << 3, 0 );
             x2 = min( x1 + ( core->RegsCRTC[1] << 3 ), 384 );
-            
+
             // y1 = max( (272-(RegsCRTC[6]<<3))>>1, 0);
             y1 = max( ( 35 - core->RegsCRTC[7] ) << 3, 0);
             y2 = min( y1 + (core->RegsCRTC[6] << 3), 272);
-            
+
             core->DrawFct = TraceLigne8B512;
             //       BG3_XDX = (x2-x1);
             //     BG3_CX = x1 << 8;
-            
+
             height=(y2-y1);
             if (height<192) height=192;
-            
-            
+
+
             core->x0=x1;
-            core->y0=y1;   // Redbug
+            core->y0=y1; // Redbug
             core->maxy=0;
-            
+
             (*core->borderX)=(384-(x2-x1))/2;
             (*core->borderY)=(272-(y2-y1))/2;
-            
+
             //            printf("*** Resize to %dx%d\n", x2-x1, y2-y1); // FM->title
             //            printf("*** Border to %dx%d\n",  (*core->borderX),  (*core->borderY)); // FM->title
-            
+
             core->Regs1=core->RegsCRTC[1];
             core->Regs2=core->RegsCRTC[2];
             core->Regs6=core->RegsCRTC[6];
             core->Regs7=core->RegsCRTC[7];
-            
+
             core->screenBufferWidth = x2-x1;
             core->screenBufferHeight = y2-y1;
-            
+
             core->MemBitmap_width = x2-x1;
+
+            core->changeFilter = 1;
         }
     }
-    
-    
+
+
     if (msgframe>frame-50*3) {
         //        int alpha;
         //        alpha=(msgframe-(frame-50*3))*4;
         //        if (alpha>255) alpha=255;
-        
+
         cpcprint(core, 0,40, msgbuf, 1);
     }
-    
+
     if (updated) {
         // dmaCopy(MemBitmap, frontBuffer, CPC_VISIBLE_SCR_WIDTH * CPC_VISIBLE_SCR_HEIGHT);
         //
         updated=0;
-        
-        if (core->UpdateInk==1) {    // It's would be beter to put before each lines
+
+        if (core->UpdateInk==1) { // It's would be beter to put before each lines
             CalcPoints(core);
         }
     }
@@ -1557,9 +1557,9 @@ void PressKey(core_crocods_t *core, CPC_KEY n)
 {
     CPC_SCANCODE cpc_scancode;
     cpc_scancode=keymap[n].normal;
-    
+
     Dispkey(n, 1);
-    
+
     if (shifted) {
         DispScanCode(CPC_SHIFT, 0 | 16);
         shifted=0;
@@ -1574,50 +1574,50 @@ void PressKey(core_crocods_t *core, CPC_KEY n)
         DispScanCode(CPC_COPY, 0);
         copyed=0;
     }
-    
+
     core->clav[(u8)cpc_scancode >> 3] &= ~bit_values[(u8)cpc_scancode & 7];
-    
+
     switch(cpc_scancode) {
-        case CPC_SHIFT:
-            if (shifted) {
-                DispScanCode(cpc_scancode, 0 | 16);
-                shifted=0;
-            } else {
-                DispScanCode(cpc_scancode, 1 | 16);
-                shifted=1;
-            }
-            break;
-        case CPC_CONTROL:
-            if (ctrled) {
-                DispScanCode(cpc_scancode, 0 | 16);
-                ctrled=0;
-            } else {
-                DispScanCode(cpc_scancode, 1 | 16);
-                ctrled=1;
-            }
-            break;
-        case CPC_COPY:
-            if (copyed) {
-                DispScanCode(cpc_scancode, 0 | 16);
-                copyed=0;
-            } else {
-                DispScanCode(cpc_scancode, 1 | 16);
-                copyed=1;
-            }
-            break;
-        default:
-            break;
+    case CPC_SHIFT:
+        if (shifted) {
+            DispScanCode(cpc_scancode, 0 | 16);
+            shifted=0;
+        } else {
+            DispScanCode(cpc_scancode, 1 | 16);
+            shifted=1;
+        }
+        break;
+    case CPC_CONTROL:
+        if (ctrled) {
+            DispScanCode(cpc_scancode, 0 | 16);
+            ctrled=0;
+        } else {
+            DispScanCode(cpc_scancode, 1 | 16);
+            ctrled=1;
+        }
+        break;
+    case CPC_COPY:
+        if (copyed) {
+            DispScanCode(cpc_scancode, 0 | 16);
+            copyed=0;
+        } else {
+            DispScanCode(cpc_scancode, 1 | 16);
+            copyed=1;
+        }
+        break;
+    default:
+        break;
     }
 }
 
 char CPC_isScanCode(core_crocods_t *core, CPC_SCANCODE cpc_scancode)
 {
     //    printf("%d %d\n", core->clav[(u8)cpc_scancode >> 3] , bit_values[(u8)cpc_scancode & 7]);
-    
+
     if (core->clav[(u8)cpc_scancode >> 3] & bit_values[(u8)cpc_scancode & 7]) {
         return 0;
     }
-    
+
     printf("Scancode: %d\n", cpc_scancode);
     return 1;
 }
@@ -1639,8 +1639,8 @@ void CPC_ClearScanCode(core_crocods_t *core, CPC_SCANCODE cpc_scancode)
 void DispScanCode(CPC_SCANCODE scancode, int status)
 {
     int n;
-    
-    for(n=0;n<NBCPCKEY;n++) {
+
+    for(n=0; n<NBCPCKEY; n++) {
         if (keymap[n].normal == scancode)  {
             Dispkey(n, status);
         }
@@ -1656,79 +1656,79 @@ void Dispkey(CPC_KEY n, int status)
 #ifndef USE_CONSOLE
     int x,y;
     u16 color;
-    
-    
+
+
     if ((status&16)!=16) {
         if ((keymap[n].normal==CPC_SHIFT) || (keymap[n].normal==CPC_CONTROL) || (keymap[n].normal==CPC_COPY)) {
             return;
         }
     }
-    
+
     switch(status) {
-        case 0:
-        case 16:
-            for(y=keypos[n].top;y<keypos[n].bottom;y++) {
-                for(x=keypos[n].left;x<keypos[n].right;x++) {
-                    backBuffer[x+y*256]=kbdBuffer[x+y*256];
-                }
+    case 0:
+    case 16:
+        for(y=keypos[n].top; y<keypos[n].bottom; y++) {
+            for(x=keypos[n].left; x<keypos[n].right; x++) {
+                backBuffer[x+y*256]=kbdBuffer[x+y*256];
             }
-            break;
-        case 17:
-        case 1:
-            color=RGB15(15,0,0);
-            for(y=keypos[n].top;y<keypos[n].bottom;y++) {
-                for(x=keypos[n].left;x<keypos[n].right;x++) {
-                    backBuffer[x+y*256]=AlphaBlendFast(kbdBuffer[x+y*256], color);
-                }
+        }
+        break;
+    case 17:
+    case 1:
+        color=RGB15(15,0,0);
+        for(y=keypos[n].top; y<keypos[n].bottom; y++) {
+            for(x=keypos[n].left; x<keypos[n].right; x++) {
+                backBuffer[x+y*256]=AlphaBlendFast(kbdBuffer[x+y*256], color);
             }
-            cpckeypressed[n]=2;
-            break;
-        case 2:
-        case 18:
-            color=RGB15(0,15,0);
-            for(y=keypos[n].top;y<keypos[n].bottom;y++) {
-                for(x=keypos[n].left;x<keypos[n].right;x++) {
-                    backBuffer[x+y*256]=~kbdBuffer[x+y*256]|0x8000;
-                    // backBuffer[x+y*256]=AlphaBlendFast(kbdBuffer[x+y*256], color);
-                }
+        }
+        cpckeypressed[n]=2;
+        break;
+    case 2:
+    case 18:
+        color=RGB15(0,15,0);
+        for(y=keypos[n].top; y<keypos[n].bottom; y++) {
+            for(x=keypos[n].left; x<keypos[n].right; x++) {
+                backBuffer[x+y*256]=~kbdBuffer[x+y*256]|0x8000;
+                // backBuffer[x+y*256]=AlphaBlendFast(kbdBuffer[x+y*256], color);
             }
-            break;
+        }
+        break;
     }
 #endif
 }
 
 void DispDisk(core_crocods_t *core, int reading)
 {
-    
+
     dispIcon(core, 0, 0, 0, 0, 0);
-    
-    
-    
+
+
+
 #ifndef USE_CONSOLE
     int x,y;
     RECT r;
     u16 color;
-    
+
     // SetRect(&r, 222,88,254,113);
     SetRect(&r, 230,1,254,33);
-    
+
     switch(reading) {
-        case 0:
-            for(y=r.top;y<r.bottom;y++) {
-                for(x=r.left;x<r.right;x++) {
-                    backBuffer[x+y*256]=kbdBuffer[x+y*256];
-                }
+    case 0:
+        for(y=r.top; y<r.bottom; y++) {
+            for(x=r.left; x<r.right; x++) {
+                backBuffer[x+y*256]=kbdBuffer[x+y*256];
             }
-            break;
-        case 1:
-            color=RGB15(15,0,0);
-            for(y=r.top;y<r.bottom;y++) {
-                for(x=r.left;x<r.right;x++) {
-                    // backBuffer[x+y*256]=AlphaBlendFast(kbdBuffer[x+y*256], color);
-                    backBuffer[x+y*256]=~kbdBuffer[x+y*256]|0x8000;
-                }
+        }
+        break;
+    case 1:
+        color=RGB15(15,0,0);
+        for(y=r.top; y<r.bottom; y++) {
+            for(x=r.left; x<r.right; x++) {
+                // backBuffer[x+y*256]=AlphaBlendFast(kbdBuffer[x+y*256], color);
+                backBuffer[x+y*256]=~kbdBuffer[x+y*256]|0x8000;
             }
-            break;
+        }
+        break;
     }
 #endif
 }
@@ -1742,95 +1742,95 @@ int nds_ReadKey(core_crocods_t *core)
         u16 keys_pressed;
         static u16 oldkey;
         int n;
-        
+
         //       scanKeys();
         //     keys_pressed = keysHeld();
-        
+
         keys_pressed = core->ipc.keys_pressed;
-        
+
         // memset(core->clav,0xFF,16);
-        
+
         if (core->ipc.touchDown==1) {
             int x,y,n;
-            
+
             x=core->ipc.touchXpx;
             y=core->ipc.touchYpx;
-            
+
             /* if ((x>0) & (x<32) & (y>=25) & (y<=36)) {
-             ExecuteMenu(core, ID_RESET, NULL);
-             ipc.touchDown=0;
-             }
+               ExecuteMenu(core, ID_RESET, NULL);
+               ipc.touchDown=0;
+               }
              */
-            
+
             if ( (x>=230) && (x<=254) && (y>=1) && (y<=33) ) { // 52
                 core->inMenu=1;
             }
-            
-            for (n=0;n<NBCPCKEY;n++) {
+
+            for (n=0; n<NBCPCKEY; n++) {
                 if ( (x>=keypos[n].left) && (x<=keypos[n].right) && (y>=keypos[n].top) && (y<=keypos[n].bottom) ) {
                     PressKey(core, n);
                     break;
                 }
             }
         }
-        
+
         if (core->keyEmul==3) {
             if ((keys_pressed & KEY_UP)==KEY_UP) {
                 CPC_SetScanCode(core, keyown[0]);
             } else {
                 CPC_ClearScanCode(core, keyown[0]);
             }
-            
+
             if ((keys_pressed & KEY_DOWN)==KEY_DOWN) {
                 CPC_SetScanCode(core, keyown[1]);
             } else {
                 CPC_ClearScanCode(core, keyown[1]);
             }
-            
+
             if ((keys_pressed & KEY_LEFT)==KEY_LEFT) {
                 CPC_SetScanCode(core, keyown[2]);
             } else {
                 CPC_ClearScanCode(core, keyown[2]);
             }
-            
+
             if ((keys_pressed & KEY_RIGHT)==KEY_RIGHT) {
                 CPC_SetScanCode(core, keyown[3]);
             } else {
                 CPC_ClearScanCode(core, keyown[3]);
             }
-            
+
             if ((keys_pressed & KEY_START)==KEY_START) {
                 CPC_SetScanCode(core, keyown[4]);
             } else {
                 CPC_ClearScanCode(core, keyown[4]);
             }
-            
+
             if ((keys_pressed & KEY_A)==KEY_A) {
                 CPC_SetScanCode(core, keyown[5]);
             } else {
                 CPC_ClearScanCode(core, keyown[5]);
             }
-            
+
             if ((keys_pressed & KEY_B)==KEY_B) {
                 CPC_SetScanCode(core, keyown[6]);
             } else {
                 CPC_ClearScanCode(core, keyown[6]);
             }
-            
+
             if ((keys_pressed & KEY_X)==KEY_X) {
                 CPC_SetScanCode(core, keyown[7]);
             } else {
                 CPC_ClearScanCode(core, keyown[7]);
             }
-            
+
             if ((keys_pressed & KEY_Y)==KEY_Y) {
                 CPC_SetScanCode(core, keyown[8]);
             } else {
                 CPC_ClearScanCode(core, keyown[8]);
             }
         }
-        
-        for(n=0;n<NBCPCKEY;n++) {
+
+        for(n=0; n<NBCPCKEY; n++) {
             if (cpckeypressed[n]!=0) {
                 cpckeypressed[n]--;
                 if(cpckeypressed[n]==0) {
@@ -1838,10 +1838,10 @@ int nds_ReadKey(core_crocods_t *core)
                 }
             }
         }
-        
+
         oldkey = keys_pressed;
     }
-    
+
     return 0;
 }
 
@@ -1858,54 +1858,54 @@ void nds_initBorder( core_crocods_t *core, int *_borderX, int *_borderY)
 void nds_init(core_crocods_t *core)
 {
     core->mustLeave = 0;
-    
+
     core->icons=(u16*)malloc(448*320*2);
-    
+
     ReadBackgroundGif16(core->icons, (unsigned char*)&icons_gif, icons_gif_len);
-    
-    
+
+
     core->Fmnbr=0;
-    
+
     struct kmenu *id;
-    
+
     core->usestylus=0;
     core->usestylusauto=1;
     core->usemagnum=0;
     core->hack_tabcoul=0;
     core->UpdateInk=1;
-    
+
     core->Regs1=0;
     core->Regs2=0;
     core->Regs6=0;
-    core->Regs7=0;       // Utilisé par le resize automatique
-    
+    core->Regs7=0; // Utilisé par le resize automatique
+
     ExecInstZ80 = ExecInstZ80_orig;
     ResetZ80 = ResetZ80_orig;
     SetIRQZ80 = SetIRQZ80_orig;
-    
-    
+
+
     root.nbr=0;
     //    menuRomId=AddMenu(&root, "Autostart ROM", ID_MENU);
     menuDiskId=AddMenu(&root, "Load Disk", ID_MENU, 0, 0);
     AddMenu(menuDiskId, "Disk", ID_GREEN_MONITOR, 0, 0); // Tofix
-    AddMenu(menuDiskId, "Autostart", ID_COLOR_MONITOR, 0 ,1); // Tofix
+    AddMenu(menuDiskId, "Autostart", ID_COLOR_MONITOR, 0,1); // Tofix
     AddMenu(menuDiskId, "Insert", ID_GREEN_MONITOR, 0, 2); // Tofix
     // FS_getFileList(addFile);
-    
+
     id=AddMenu(&root, "Switch monitor", ID_MONITOR_MENU, 0, 0);
     AddMenu(id, "Color Monitor", ID_COLOR_MONITOR, 1, 1);
     AddMenu(id, "Green Monitor", ID_GREEN_MONITOR, 1, 0);
-    
+
     id=AddMenu(&root, "Resize", ID_SCREEN_MENU, 0, 0);
     AddMenu(id, "Auto", ID_SCREEN_AUTO, 2, 2);
     AddMenu(id, "320x200", ID_SCREEN_320, 2, 3);
     AddMenu(id, "Overscan", ID_SCREEN_OVERSCAN, 2, 0);
-    
+
     id=AddMenu(&root, "Pad emulation", ID_KEY_MENU, 0, 0);
     AddMenu(id, "Keyboard Emulation", ID_KEY_KEYBOARD, 3, 0);
     AddMenu(id, "Set to Joystick", ID_KEY_JOYSTICK, 3, 1);
     AddMenu(id, "Set to Keypad", ID_KEY_KEYPAD, 3, 2);
-    
+
     //    keyMenu=AddMenu(id, "Redefine Keys", ID_MENU);
     //    AddMenu(keyMenu, "Up: XXXXXXXXXX", ID_REDEFINE_UP);
     //    AddMenu(keyMenu, "Down: XXXXXXXXXX", ID_REDEFINE_DOWN);
@@ -1918,37 +1918,37 @@ void nds_init(core_crocods_t *core)
     //    AddMenu(keyMenu, "START: XXXXXXXXXX", ID_REDEFINE_START);
     // AddMenu(keyMenu, "L: XXXXXXXXXX", ID_REDEFINE_L);
     // AddMenu(keyMenu, "R: XXXXXXXXXX", ID_REDEFINE_R);
-    
+
     id=AddMenu(&root, "Debug", ID_MENU, 0, 0);
     AddMenu(id, "Display framerate", ID_DISPFRAMERATE, 4, 0);
     AddMenu(id, "Don't display framerate", ID_NODISPFRAMERATE, 4, 1);
-    
+
     //    id=AddMenu(&root,"Hack", ID_MENU, 0, 0);
     //    AddMenu(id, "Only one ink refresh per frame: N", ID_HACK_TABCOUL, 5, 0);
     //    AddMenu(id, "Normal ink refresh per frame: N", ID_NOHACK_TABCOUL, 5, 0);
-    
+
     //    AddMenu(&root, "Reset CPC", ID_RESET);
-    
+
     id=AddMenu(&root, "State", ID_MENU, 6, 0);
     //    AddMenu(id, "Load State", ID_SAVESNAP, 6, 0);
     AddMenu(id, "Save State", ID_SAVESNAP, 6, 1);
-    
-    
+
+
     id = AddMenu(&root, "Action", ID_MENU, 7, 0);
     AddMenu(id, "Reset", ID_RESET, 7, 1);
-    
+
     ExecuteMenu(core, ID_COLOR_MONITOR, NULL);
     //   ExecuteMenu(ID_SCREEN_AUTO, NULL);
-    
+
     //   ExecuteMenu(core, ID_SCREEN_320, NULL);
     ExecuteMenu(core, ID_SCREEN_AUTO, NULL);
     //    ExecuteMenu(core, ID_KEY_JOYSTICK, NULL);
     ExecuteMenu(core, ID_KEY_KEYBOARD, NULL);
     ExecuteMenu(core, ID_NODISPFRAMERATE, NULL);
     //   ExecuteMenu(core, ID_HACK_TABCOUL, NULL);
-    
+
     //    ExecuteMenu(core, ID_DEBUG_ENTER, NULL);
-    
+
     strcpy(core->currentfile,"nofile");
 }
 
@@ -1987,13 +1987,13 @@ void myconsoleClear(core_crocods_t *core)
 void myprintf0(core_crocods_t *core, const char *fmt, ...)
 {
     char tmp[512];
-    
+
     va_list args;
-    
+
     va_start(args, fmt);
     vsprintf(tmp,fmt,args);
     va_end(args);
-    
+
     if (tmp[0]=='\n') {
         core->consolepos++;
         if (core->consolepos==8) {
@@ -2001,7 +2001,7 @@ void myprintf0(core_crocods_t *core, const char *fmt, ...)
             core->consolepos=7;
         }
     }
-    
+
     memcpy(core->consolestring+core->consolepos*128, tmp, 128);
     core->consolestring[core->consolepos*128-1]=0;
 }
@@ -2010,26 +2010,26 @@ void myprintf(const char *fmt, ...)
 {
     char tmp[512];
     int n;
-    
+
     va_list args;
-    
+
     va_start(args, fmt);
     vsprintf(tmp,fmt,args);
     va_end(args);
-    
-    
+
+
     strncpy(msgbuf, tmp, 32);
     msgbuf[32]=0;
     msgframe=frame;
-    for(n=(int)strlen(msgbuf);n<32;n++) {
+    for(n=(int)strlen(msgbuf); n<32; n++) {
         msgbuf[n]=' ';
     }
-    
-    
+
+
 #ifdef USE_CONSOLE
     printf("%s\n", tmp);
 #else
-    
+
     if (backBuffer==NULL) {
         return;
     } else {
@@ -2037,12 +2037,12 @@ void myprintf(const char *fmt, ...)
         int n;
         int width;
         int x,y;
-        
+
         memcpy(consolestring+consolepos*128, tmp, 128);
         consolestring[consolepos*128-1]=0;
-        
+
         if (!inMenu) {
-            for(n=0;n<8;n++) {
+            for(n=0; n<8; n++) {
                 if (n<=consolepos) {
                     if (consolestring[n*128]==1) {
                         width = DrawText(backBuffer, fontred, 110, 5+n*10, consolestring+n*128+1);
@@ -2052,15 +2052,15 @@ void myprintf(const char *fmt, ...)
                 } else {
                     width = 0;
                 }
-                for(y=5+n*10;y<5+(n+1)*10;y++) {
-                    for(x=110+width;x<253;x++) {
-                        backBuffer[x+y*256]=RGB15((156>>3), (178>>3), (165>>3))|0x8000;  // 156, 178, 165
+                for(y=5+n*10; y<5+(n+1)*10; y++) {
+                    for(x=110+width; x<253; x++) {
+                        backBuffer[x+y*256]=RGB15((156>>3), (178>>3), (165>>3))|0x8000; // 156, 178, 165
                     }
                 }
             }
         }
 #endif
-        
+
         consolepos++;
         if (consolepos==8) {
             memcpy(consolestring,consolestring+128,1024-128);
@@ -2078,25 +2078,27 @@ void ResetCPC(core_crocods_t *core)
     ResetZ80(core);
     ResetCRTC(core);
     ResetPPI(core);
-    
+
     Reset8912(core);
 }
 
-void cpcprint(core_crocods_t *core, int x, int y, char *pchStr, u16 bColor)
+
+void cpcprint16(u16 *MemBitmap, u32 MemBitmap_width, int x, int y, char *pchStr, u16 bColor, int multi, char transparent)
 {
     int iLen, iIdx, iRow, iCol;
     u8 bRow;
     u16 *pdwAddr;
     int n;
-    
+    int mx, my;
+
     u16 backgroundColor = RGB15(0,0,0x7F);
-    
+
     if (bColor==1) {
         bColor = RGB15(0xFF,0xFF,0);
     }
-    
-    pdwAddr = (u16*)core->MemBitmap + (y*core->MemBitmap_width) + x;
-    
+
+    pdwAddr = (u16*)MemBitmap + (y*MemBitmap_width) + x;
+
     iLen = (int)strlen(pchStr); // number of characters to process
     for (n = 0; n < iLen; n++) {
         u16 *pdwLine;
@@ -2107,46 +2109,78 @@ void cpcprint(core_crocods_t *core, int x, int y, char *pchStr, u16 bColor)
         iIdx -= FNT_MIN_CHAR; // zero base the index
         pdwLine = pdwAddr; // keep a reference to the current screen position
         for (iRow = 0; iRow < FNT_CHAR_HEIGHT; iRow++) { // loop for all rows in the font character
-            u16 *pdPixel;
-            
-            pdPixel = pdwLine;
-            bRow = bFont[iIdx]; // get the bitmap information for one row
-            for (iCol = 0; iCol < 2; iCol++) { // loop for all columns in the font character
-                *pdPixel = ((bRow & 0x80) ? (bColor) : backgroundColor); pdPixel++;
-                *pdPixel = ((bRow & 0x40) ? (bColor) : backgroundColor); pdPixel++;
-                *pdPixel = ((bRow & 0x20) ? (bColor) : backgroundColor); pdPixel++;
-                *pdPixel = ((bRow & 0x10) ? (bColor) : backgroundColor); pdPixel++;
-                
-                bRow <<= 4; // advance to the next bit
+            for(my = 0; my < multi; my++) {
+                u16 *pdPixel;
+                char first=1;
+
+                pdPixel = pdwLine;
+                bRow = bFont[iIdx]; // get the bitmap information for one row
+                for (iCol = 0; iCol < 8; iCol++) { // loop for all columns in the font character
+
+                    for (mx=0; mx<multi; mx++) {
+                        //
+                        //
+                        if (bRow & 0x80) {
+
+                            if (multi>1) {
+                                if (*(pdPixel-MemBitmap_width)!=bColor) {
+                                    *(pdPixel-MemBitmap_width)=backgroundColor;
+                                }
+                                if (*(pdPixel-1)!=bColor) {
+                                    *(pdPixel-1)=backgroundColor;
+                                }
+
+                                *(pdPixel+MemBitmap_width)=backgroundColor;
+                                *(pdPixel+1)=backgroundColor;
+                            }
+
+                            *pdPixel = bColor;
+                            first=0;
+
+                        } else if (!transparent) {
+                            *pdPixel =  backgroundColor;
+                        }
+
+                        pdPixel++;
+                    }
+
+                    bRow <<= 1; // advance to the next bit
+                }
+                pdwLine += MemBitmap_width;
             }
-            pdwLine += core->MemBitmap_width;
             iIdx += FNT_CHARS; // advance to next row in font data
         }
-        pdwAddr += FNT_CHAR_WIDTH; // set screen address to next character position
+        pdwAddr += FNT_CHAR_WIDTH * multi; // set screen address to next character position
     }
 }
 
+
+void cpcprint(core_crocods_t *core, int x, int y, char *pchStr, u16 bColor)
+{
+    cpcprint16(core->MemBitmap, core->MemBitmap_width, x, y, pchStr, bColor, 1, 0);
+}
+
 void dispIcon(core_crocods_t *core, int i, int j, int dispiconX, int dispiconY, char select) {
-    
+
     int x,y;
-    
+
     //    u16 *pdwAddr = (u16*)core->MemBitmap + ((j*32)*core->MemBitmap_width) + (224+x) - (i*32);
-    
+
     //    printf("%d %d\n", i, j);
-    
+
     u16 *pdwAddr = (u16*)core->MemBitmap + ((j*32)*core->MemBitmap_width) + (i*32);
-    
+
     if (core->lastMode==2) {
         pdwAddr += ((j*32)*core->MemBitmap_width);
     }
-    
-    
-    for(y=0;y<32;y++) {
+
+
+    for(y=0; y<32; y++) {
         u16 *pdPixel;
-        
+
         pdPixel = pdwAddr;
-        
-        for(x=0;x<32;x++) {
+
+        for(x=0; x<32; x++) {
             u16 car;
             car=core->icons[(x+dispiconX*32)+(y+dispiconY*32)*448];
             if (car!=33840) {
@@ -2159,9 +2193,9 @@ void dispIcon(core_crocods_t *core, int i, int j, int dispiconX, int dispiconY, 
             pdPixel++;
             // }
         }
-        
+
         pdwAddr += core->MemBitmap_width;
-        
+
         if (core->lastMode==2) {
             pdwAddr += core->MemBitmap_width;
         }
@@ -2202,15 +2236,15 @@ void selectMenuDown(core_crocods_t *core) {
 void DispIcons(core_crocods_t *core)
 {
     int dirY=0;
-    
+
     if (core->selectedMenu==NULL) {
         core->selectedMenu = root.firstchild;
     }
-    
+
     //    if (core->iconMenuX!=-1) {
     //        cpcprint(core, 0,40, "     ", 255);
     //    }
-    
+
     if (CPC_isScanCode(core, CPC_CURSOR_LEFT)) {
         CPC_ClearScanCode(core, CPC_CURSOR_LEFT);
         if (core->selectedMenu->parent->parent==NULL) {
@@ -2244,61 +2278,61 @@ void DispIcons(core_crocods_t *core)
             selectedMenu(core, core->selectedMenu->parent);
         }
     }
-    
+
     struct kmenu *currentMenu;
     int i;
     currentMenu = root.firstchild;
-    
-    for(i=0;i<root.nbr;i++) {
+
+    for(i=0; i<root.nbr; i++) {
         int z;
         u16 transpcolor;
-        
+
         transpcolor = 64543; // RGB15(31,0,31);
         z=0;
         switch(i) {
-            case 0:
-                z=ID_FILE;
-                break;
-            case 1:
-                z= (core->lastcolour==0) ? ID_GREEN_MONITOR : ID_COLOR_MONITOR;
-                break;
-            case 2:
-                if (core->resize==1) { // AUTO
-                    z=ID_SCREEN_AUTO;
-                } else if (core->resize==2) { // 320
-                    z=ID_SCREEN_320;
-                } else if (core->resize==3) { // NO-RESIZE
-                    z=ID_SCREEN_NORESIZE; // Not used
-                } else if (core->resize==4) { // OVERSCAN
-                    z=ID_SCREEN_OVERSCAN;
+        case 0:
+            z=ID_FILE;
+            break;
+        case 1:
+            z= (core->lastcolour==0) ? ID_GREEN_MONITOR : ID_COLOR_MONITOR;
+            break;
+        case 2:
+            if (core->resize==1) { // AUTO
+                z=ID_SCREEN_AUTO;
+            } else if (core->resize==2) { // 320
+                z=ID_SCREEN_320;
+            } else if (core->resize==3) { // NO-RESIZE
+                z=ID_SCREEN_NORESIZE; // Not used
+            } else if (core->resize==4) { // OVERSCAN
+                z=ID_SCREEN_OVERSCAN;
+            }
+            break;
+        case 3:
+            if (core->keyEmul==2) {
+                z=ID_KEY_KEYBOARD;
+            } else if (core->keyEmul==3) {
+                if (keyown[0]==CPC_JOY_UP) {
+                    z=ID_KEY_JOYSTICK;
+                } else if (keyown[0]==CPC_CURSOR_UP) {
+                    z=ID_KEY_KEYPAD;
                 }
-                break;
-            case 3:
-                if (core->keyEmul==2) {
-                    z=ID_KEY_KEYBOARD;
-                } else if (core->keyEmul==3) {
-                    if (keyown[0]==CPC_JOY_UP) {
-                        z=ID_KEY_JOYSTICK;
-                    } else if (keyown[0]==CPC_CURSOR_UP) {
-                        z=ID_KEY_KEYPAD;
-                    }
-                }
-                break;
-            case 4:
-                z= core->dispframerate ? ID_DISPFRAMERATE : ID_NODISPFRAMERATE;
-                break;
-            case 5:
-                //                z= (core->multikeypressed==1) ? 1 : 0;
-                break;
-            case 6:
-                z=0;
-                //                if (HaveSlotSnap(currentfile, currentsnap)) {
-                //                    nbr=4;
-                //                } else {
-                //                }
-                break;
+            }
+            break;
+        case 4:
+            z= core->dispframerate ? ID_DISPFRAMERATE : ID_NODISPFRAMERATE;
+            break;
+        case 5:
+            //                z= (core->multikeypressed==1) ? 1 : 0;
+            break;
+        case 6:
+            z=0;
+            //                if (HaveSlotSnap(currentfile, currentsnap)) {
+            //                    nbr=4;
+            //                } else {
+            //                }
+            break;
         }
-        
+
         //        int dispicon;
         //
         //        if (i==0) {
@@ -2307,131 +2341,131 @@ void DispIcons(core_crocods_t *core)
         //        } else {
         //            dispicon = z;
         //        }
-        
+
         //        dispIcon(core, i, 0, i, dispicon, 0);
-        
+
         struct kmenu *currentSubMenu = currentMenu->firstchild;
         char displayIcon = 0;
-        
+
         do {
             if (currentSubMenu->id == z) {
                 dispIcon(core, i, 0, currentSubMenu->x, currentSubMenu->y,  (core->selectedMenu==currentMenu));
                 displayIcon = 1;
                 break;
             }
-            
+
             currentSubMenu = currentSubMenu->nextSibling;
         } while (currentSubMenu!=NULL);
-        
+
         if (!displayIcon) {
             dispIcon(core, i, 0, currentMenu->x, currentMenu->y,  (core->selectedMenu==currentMenu));
-            
+
         }
-        
+
         if ((core->selectedMenu->parent==currentMenu) || (core->selectedMenu==currentMenu)) {
             int j, cur, zicon;
-            
+
             zicon=z;
             //            nbricon=nbr;
-            
-            
+
+
             cur=0;
             j=1;
-            
+
             currentSubMenu = currentMenu->firstchild;
-            
+
             do {
-                
+
                 if (currentSubMenu->id == z) {
                     cur++;
-                    
+
                     if (currentSubMenu == core->selectedMenu) {
                         if (dirY==1) {
                             selectMenuDown(core);
-                        } else  if (dirY==-1) {
+                        } else if (dirY==-1) {
                             selectMenuUp(core);
                         }
                     }
-                    
+
                     currentSubMenu = currentSubMenu->nextSibling;
-                    
-                    
+
+
                     if (currentSubMenu==NULL) {
                         break;
                     }
                 }
-                
+
                 dispIcon(core, i, j, currentSubMenu->x, currentSubMenu->y, (currentSubMenu == core->selectedMenu));
-                
-                
+
+
                 cur++;
-                
+
                 j++;
                 currentSubMenu = currentSubMenu->nextSibling;
             } while (currentSubMenu!=NULL);
-            
+
         }
-        
+
         currentMenu = currentMenu->nextSibling;
     }
 }
 
 /*
- void LoopMenu(core_crocods_t *core, struct kmenu *parent)
- {
- PauseSound();
- 
- menubuffer=(u16*)malloc(256*192*2);
- 
- 
- 
- if (parent==NULL) {
- iconAutoInsert=-1;
- LoadMenu(&root);
- } else {
- LoadMenu(parent);
- }
- SetPalette(-1);
- 
- 
+   void LoopMenu(core_crocods_t *core, struct kmenu *parent)
+   {
+   PauseSound();
+
+   menubuffer=(u16*)malloc(256*192*2);
+
+
+
+   if (parent==NULL) {
+   iconAutoInsert=-1;
+   LoadMenu(&root);
+   } else {
+   LoadMenu(parent);
+   }
+   SetPalette(-1);
+
+
  #ifndef USE_CONSOLE
- dmaCopy(menubuffer, backBuffer, 256*192*2);
- 
+   dmaCopy(menubuffer, backBuffer, 256*192*2);
+
  #ifdef USE_ALTERSCREEN
- int x,y,width,n;
- 
- for(n=0;n<8;n++) {
- if (n<=consolepos) {
- if (consolestring[n*128]==1) {
- width = DrawText(backBuffer, fontred, 110, 5+n*10, consolestring+n*128+1);
- } else {
- width = DrawText(backBuffer, font, 110, n*10+5, consolestring+n*128);
- }
- } else {
- width = 0;
- }
- for(y=5+n*10;y<5+(n+1)*10;y++) {
- for(x=110+width;x<253;x++) {
- backBuffer[x+y*256]=RGB15((156>>3), (178>>3), (165>>3))|0x8000;  // 156, 178, 165
- }
- }
- }
+   int x,y,width,n;
+
+   for(n=0;n<8;n++) {
+   if (n<=consolepos) {
+   if (consolestring[n*128]==1) {
+   width = DrawText(backBuffer, fontred, 110, 5+n*10, consolestring+n*128+1);
+   } else {
+   width = DrawText(backBuffer, font, 110, n*10+5, consolestring+n*128);
+   }
+   } else {
+   width = 0;
+   }
+   for(y=5+n*10;y<5+(n+1)*10;y++) {
+   for(x=110+width;x<253;x++) {
+   backBuffer[x+y*256]=RGB15((156>>3), (178>>3), (165>>3))|0x8000;  // 156, 178, 165
+   }
+   }
+   }
  #endif
  #endif
- 
- free(menubuffer);
- 
- DispIcons();
- 
- inMenu=0;
- 
- if (dispframerate==0) {
- cpcprint16i(0,192-8, "                                  ", 255);
- }
- 
- PlaySound();
- }
- 
+
+   free(menubuffer);
+
+   DispIcons();
+
+   inMenu=0;
+
+   if (dispframerate==0) {
+   cpcprint16i(0,192-8, "                                  ", 255);
+   }
+
+   PlaySound();
+   }
+
  */
 
 
@@ -2439,133 +2473,133 @@ void DispIcons(core_crocods_t *core)
 // retour 0 si on doit revenir au parent
 
 /*
- int LoadMenu(core_crocods_t *core, struct kmenu *parent)
- {
- // RECT r, ralbum;
- struct kmenu *first;
- 
- if (parent->nbr==0) {
- return 1;
- }
- 
- // SetRect(&ralbum,248,4,253,85);   // 4, 110
- 
- 
- while(1) {
- int i,n;
- struct kmenu *selected=NULL;
- char *bufpos[7];
- 
- swiWaitForVBlank();
- myconsoleClear();
- 
- first=parent->firstchild;
- i=0;
- n=0;
- 
- memset(bufpos, 0, sizeof(u8*)*7);
- 
- while(1) {
- if ( ((i-parent->pos+3)>=0) & ((i-parent->pos+3)<7) ) {
- bufpos[i-parent->pos+3]=first->title;
- }
- if (i==parent->pos) {
- selected=first;
- }
- i++;
- first=first->next;
- if (first==NULL) {
- break;
- }
- }
+   int LoadMenu(core_crocods_t *core, struct kmenu *parent)
+   {
+   // RECT r, ralbum;
+   struct kmenu *first;
+
+   if (parent->nbr==0) {
+   return 1;
+   }
+
+   // SetRect(&ralbum,248,4,253,85);   // 4, 110
+
+
+   while(1) {
+   int i,n;
+   struct kmenu *selected=NULL;
+   char *bufpos[7];
+
+   swiWaitForVBlank();
+   myconsoleClear();
+
+   first=parent->firstchild;
+   i=0;
+   n=0;
+
+   memset(bufpos, 0, sizeof(u8*)*7);
+
+   while(1) {
+   if ( ((i-parent->pos+3)>=0) & ((i-parent->pos+3)<7) ) {
+   bufpos[i-parent->pos+3]=first->title;
+   }
+   if (i==parent->pos) {
+   selected=first;
+   }
+   i++;
+   first=first->next;
+   if (first==NULL) {
+   break;
+   }
+   }
  #ifndef USE_CONSOLE
- dmaCopy(menubufferlow, backBuffer, 256*192*2);
- 
- {
- u32 n;
- char buffer[256];
- 
- 
- 
- for(n=0;n<7;n++) {
- if (bufpos[n]!=NULL) {
- u16 color;
- color = RGB15((31 - abs(3-n)*6), (31 - abs(3-n)*6), (31 - abs(3-n)*6)) | 0x8000;
- DrawTextLeft(backBuffer, filefont, color, 2, (n*20)+26, bufpos[n]);
- }
- }
- sprintf(buffer,"\x03 Select \x04 Back");
- DrawTextCenter(backBuffer, filefont, RGB15(0,0,31) | 0x8000,  176, buffer);
- if (parent!=&root) {
- DrawTextLeft(backBuffer, filefont, RGB15(31,31,0) | 0x8000, 15, 1, parent->title);
- } else {
- DrawTextLeft(backBuffer, filefont, RGB15(31,31,0) | 0x8000, 15, 1, "Root");
- }
- }
+   dmaCopy(menubufferlow, backBuffer, 256*192*2);
+
+   {
+   u32 n;
+   char buffer[256];
+
+
+
+   for(n=0;n<7;n++) {
+   if (bufpos[n]!=NULL) {
+   u16 color;
+   color = RGB15((31 - abs(3-n)*6), (31 - abs(3-n)*6), (31 - abs(3-n)*6)) | 0x8000;
+   DrawTextLeft(backBuffer, filefont, color, 2, (n*20)+26, bufpos[n]);
+   }
+   }
+   sprintf(buffer,"\x03 Select \x04 Back");
+   DrawTextCenter(backBuffer, filefont, RGB15(0,0,31) | 0x8000,  176, buffer);
+   if (parent!=&root) {
+   DrawTextLeft(backBuffer, filefont, RGB15(31,31,0) | 0x8000, 15, 1, parent->title);
+   } else {
+   DrawTextLeft(backBuffer, filefont, RGB15(31,31,0) | 0x8000, 15, 1, "Root");
+   }
+   }
  #endif
- 
- 
- 
- keys_pressed = MyReadKey();
- 
- if ((keys_pressed & KEY_UP)==KEY_UP) {
- parent->pos--;
- if(parent->pos<0) {
- parent->pos=parent->nbr-1;
- parent->beg=parent->nbr-7;
- }
- while(parent->pos-parent->beg<0) {
- parent->beg--;
- }
- }
- if ((keys_pressed & KEY_DOWN)==KEY_DOWN)  {
- parent->pos++;
- if (parent->pos>=parent->nbr) {
- parent->pos=0;
- parent->beg=0;
- }
- while(parent->pos-parent->beg>=7) {
- parent->beg++;
- }
- }
- if ((keys_pressed & KEY_A)==KEY_A) {
- int retour;
- if (selected->firstchild!=NULL) {
- if (LoadMenu(selected)==1) {
- return 1;
- }
- }
- retour=ExecuteMenu(selected->id, selected);
- if (retour!=2) {
- return retour;
- }
- }
- if ((keys_pressed & KEY_L)==KEY_L) {
- parent->pos-=8;
- if(parent->pos<0) {
- parent->pos=parent->nbr-1;
- parent->beg=parent->nbr-7;
- }
- while(parent->pos-parent->beg<0) {
- parent->beg--;
- }
- }
- if ((keys_pressed & KEY_R)==KEY_R)  {
- parent->pos+=7;
- if (parent->pos>=parent->nbr) {
- parent->pos=0;
- parent->beg=0;
- }
- while(parent->pos-parent->beg>=7) {
- parent->beg++;
- }
- }
- 
- if ((keys_pressed & KEY_B)==KEY_B) {
- return 0;
- }
- }
- }
+
+
+
+   keys_pressed = MyReadKey();
+
+   if ((keys_pressed & KEY_UP)==KEY_UP) {
+   parent->pos--;
+   if(parent->pos<0) {
+   parent->pos=parent->nbr-1;
+   parent->beg=parent->nbr-7;
+   }
+   while(parent->pos-parent->beg<0) {
+   parent->beg--;
+   }
+   }
+   if ((keys_pressed & KEY_DOWN)==KEY_DOWN)  {
+   parent->pos++;
+   if (parent->pos>=parent->nbr) {
+   parent->pos=0;
+   parent->beg=0;
+   }
+   while(parent->pos-parent->beg>=7) {
+   parent->beg++;
+   }
+   }
+   if ((keys_pressed & KEY_A)==KEY_A) {
+   int retour;
+   if (selected->firstchild!=NULL) {
+   if (LoadMenu(selected)==1) {
+   return 1;
+   }
+   }
+   retour=ExecuteMenu(selected->id, selected);
+   if (retour!=2) {
+   return retour;
+   }
+   }
+   if ((keys_pressed & KEY_L)==KEY_L) {
+   parent->pos-=8;
+   if(parent->pos<0) {
+   parent->pos=parent->nbr-1;
+   parent->beg=parent->nbr-7;
+   }
+   while(parent->pos-parent->beg<0) {
+   parent->beg--;
+   }
+   }
+   if ((keys_pressed & KEY_R)==KEY_R)  {
+   parent->pos+=7;
+   if (parent->pos>=parent->nbr) {
+   parent->pos=0;
+   parent->beg=0;
+   }
+   while(parent->pos-parent->beg>=7) {
+   parent->beg++;
+   }
+   }
+
+   if ((keys_pressed & KEY_B)==KEY_B) {
+   return 0;
+   }
+   }
+   }
  */
 
 u8 *MyAlloc(int size, char *title)

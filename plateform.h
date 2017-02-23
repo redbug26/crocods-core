@@ -564,14 +564,13 @@ extern "C" {
     void myprintf0(core_crocods_t *core, const char *fmt, ...) ;
     void drawconsole(void);
     
+    void cpcprint16(u16 *MemBitmap, u32 MemBitmap_width, int x, int y, char *pchStr, u16 bColor, int multi, char transparent);
     void cpcprint(core_crocods_t *core, int x, int y, char *pchStr, u16 Colour);
     
     u16 MyReadKey(void);
     
     
     void ExecZ80Code(core_crocods_t *core, char *code, int len, SRegs *result); // z80.h
-    
-    
     
     typedef struct {
         int left,top,right,bottom;
