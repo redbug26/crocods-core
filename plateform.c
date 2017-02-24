@@ -832,7 +832,7 @@ void DrawLift(RECT *max, RECT *dest, u16 coloron, u16 coloroff)
 // 1: couleur
 // 3: inactif
 
-#define RGB15(R,G,B) ((((R) & 0xF8) << 8) | (((G) & 0xFC) << 3) | (((B) & 0xF8) >> 3));
+#define RGB15(R,G,B) ((((R) & 0xF8) << 8) | (((G) & 0xFC) << 3) | (((B) & 0xF8) >> 3))
 
 void SetPalette(core_crocods_t *core, int color)
 {
@@ -2089,7 +2089,7 @@ void cpcprint16(u16 *MemBitmap, u32 MemBitmap_width, int x, int y, char *pchStr,
     u8 bRow;
     u16 *pdwAddr;
     int n;
-    int mx, my;
+    int mx, my, mz;
 
     u16 backgroundColor = RGB15(0,0,0x7F);
 
@@ -2123,16 +2123,20 @@ void cpcprint16(u16 *MemBitmap, u32 MemBitmap_width, int x, int y, char *pchStr,
                         if (bRow & 0x80) {
 
                             if (multi>1) {
-                                if (*(pdPixel-MemBitmap_width)!=bColor) {
-                                    *(pdPixel-MemBitmap_width)=backgroundColor;
+
+                            for (mz=1;mz<=2;mz++) {
+
+                                if (*(pdPixel-MemBitmap_width*mz)!=bColor) {
+                                    *(pdPixel-MemBitmap_width*mz)=backgroundColor;
                                 }
-                                if (*(pdPixel-1)!=bColor) {
-                                    *(pdPixel-1)=backgroundColor;
+                                if (*(pdPixel-mz)!=bColor) {
+                                    *(pdPixel-mz)=backgroundColor;
                                 }
 
-                                *(pdPixel+MemBitmap_width)=backgroundColor;
-                                *(pdPixel+1)=backgroundColor;
+                                *(pdPixel+MemBitmap_width*mz)=backgroundColor;
+                                *(pdPixel+mz)=backgroundColor;
                             }
+                        }
 
                             *pdPixel = bColor;
                             first=0;
