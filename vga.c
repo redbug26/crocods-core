@@ -138,6 +138,8 @@ void WriteVGA( core_crocods_t *core, u16 port, u8 val )
             
             core->DecodeurAdresse = val;
             core->lastMode = val & 3;
+			core->changeFilter=1;
+
             SetMemCPC(core);
             if ( val & 0x10 ) {
                 core->CntHSync = 0;

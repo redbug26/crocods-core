@@ -2082,14 +2082,39 @@ void ResetCPC(core_crocods_t *core)
     Reset8912(core);
 }
 
+u16 computeColor(int x, int y, int frame) {
+
+    u8 Sinus[256]={131,134,137,141,144,147,150,153,156,159,162,165,168,171,174,177,180,183,186,188,191,194,196,199,202,204,207,209,212,214,216,219,221,223,225,227,229,231,233,234,236,238,239,241,242,244,245,246,247,249,250,250,251,252,253,254,254,255,255,255,255,255,255,255,255,255,255,255,255,255,254,254,253,252,251,250,250,249,247,246,245,244,242,241,239,238,236,234,233,231,229,227,225,223,221,219,216,214,212,209,207,204,202,199,196,194,191,188,186,183,180,177,174,171,168,165,162,159,156,153,150,147,144,141,137,134,131,128,125,122,119,115,112,109,106,103,100,97,94,91,88,85,82,79,76,73,70,68,65,62,60,57,54,52,49,47,44,42,40,37,35,33,31,29,27,25,23,22,20,18,17,15,14,12,11,10,9,7,6,6,5,4,3,2,2,1,1,1,0,0,0,0,0,0,0,1,1,1,2,2,3,4,5,6,6,7,9,10,11,12,14,15,17,18,20,22,23,25,27,29,31,33,35,37,40,42,44,47,49,52,54,57,60,62,65,68,70,73,76,79,82,85,88,91,94,97,100,103,106,109,112,115,119,122,125,128};
+
+
+    u8 r,g,b;
+
+    x=0;
+    y=y*4;
+
+    y=y/2;
+    frame=frame/2;
+
+    u8 pal = (Sinus[(x+y)%256] + Sinus[Sinus[(frame+x)%256]] + Sinus[Sinus[(frame+y)%256]])%256;
+
+    r = Sinus[(pal+142)%256];
+    g = Sinus[(pal+112)%256];
+    b = Sinus[(pal+74)%256];
+
+    return RGB15(r,g,b);
+}
 
 void cpcprint16(u16 *MemBitmap, u32 MemBitmap_width, int x, int y, char *pchStr, u16 bColor, int multi, char transparent)
 {
+    static int frame=0;
+
     int iLen, iIdx, iRow, iCol;
     u8 bRow;
     u16 *pdwAddr;
     int n;
     int mx, my, mz;
+
+    frame++;
 
     u16 backgroundColor = RGB15(0,0,0x7F);
 
@@ -2117,26 +2142,32 @@ void cpcprint16(u16 *MemBitmap, u32 MemBitmap_width, int x, int y, char *pchStr,
                 bRow = bFont[iIdx]; // get the bitmap information for one row
                 for (iCol = 0; iCol < 8; iCol++) { // loop for all columns in the font character
 
+
                     for (mx=0; mx<multi; mx++) {
-                        //
-                        //
+
+
+                    // bColor = computeColor(iCol + n*8, iRow, frame);
+                    bColor = computeColor((n)*8*multi+iCol*multi+mx, multi+iRow*multi+my, frame);
+
+// transparent=0;      backgroundColor = bColor;
+
                         if (bRow & 0x80) {
 
-                            if (multi>1) {
+                            // if (multi>1) {
 
-                            for (mz=1;mz<=2;mz++) {
+                            //     for (mz=1; mz<=2; mz++) {
 
-                                if (*(pdPixel-MemBitmap_width*mz)!=bColor) {
-                                    *(pdPixel-MemBitmap_width*mz)=backgroundColor;
-                                }
-                                if (*(pdPixel-mz)!=bColor) {
-                                    *(pdPixel-mz)=backgroundColor;
-                                }
+                            //         if (*(pdPixel-MemBitmap_width*mz)!=bColor) {
+                            //             *(pdPixel-MemBitmap_width*mz)=backgroundColor;
+                            //         }
+                            //         if (*(pdPixel-mz)!=bColor) {
+                            //             *(pdPixel-mz)=backgroundColor;
+                            //         }
 
-                                *(pdPixel+MemBitmap_width*mz)=backgroundColor;
-                                *(pdPixel+mz)=backgroundColor;
-                            }
-                        }
+                            //         *(pdPixel+MemBitmap_width*mz)=backgroundColor;
+                            //         *(pdPixel+mz)=backgroundColor;
+                            //     }
+                            // }
 
                             *pdPixel = bColor;
                             first=0;

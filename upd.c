@@ -96,19 +96,19 @@
 static int RechercheSecteur( core_crocods_t *core, int newSect, int * pos )
 {
     int i;
-    
+
     * pos = 0;
     for ( i = 0; i < core->CurrTrackDatasDSK.NbSect; i++ )
         if ( core->CurrTrackDatasDSK.Sect[ i ].R == newSect )
             return( ( UBYTE )i );
         else
             * pos += core->CurrTrackDatasDSK.Sect[ i ].SectSize;
-    
+
     core->ST0 |= ST0_IC1;
     core->ST1 |= ST1_ND;
-    
+
     //    sprintf( MsgLog, "secteur (C:%02X,H:%02X,R:%02X) non trouvé", C, H, R );
-    
+
     return( 0 );
 }
 
@@ -160,7 +160,7 @@ static void SetST0( core_crocods_t *core )
     core->ST0 = 0; // drive A
     if ( ! core->Moteur || core->Drive || ! core->Image )
         core->ST0 |= ST0_IC1 | ST0_NR;
-    
+
     core->ST1 = 0;
     core->ST2 = 0;
 }
@@ -186,9 +186,9 @@ static int Rien( core_crocods_t *core, int val )
     core->Status &= ~STATUS_CB & ~STATUS_DIO;
     core->etat = 0;
     core->ST0 = ST0_IC2;
-    
+
     //    Log( "Appel fonction FDC Rien", LOG_DEBUG );
-    
+
     return( core->Status );
 }
 
@@ -231,13 +231,13 @@ static int ReadST0( core_crocods_t *core, int val )
         if ( ! core->Image )
             core->ST0 |= ( ST0_IC1 | ST0_IC2 );
     }
-    
+
     if ( core->etat++ == 1 )
     {
         core->Status |= STATUS_DIO;
         return( core->ST0 );
     }
-    
+
     core->etat = val = 0;
     core->Status &= ~STATUS_CB & ~STATUS_DIO;
     core->ST0 &= ~ST0_IC1 & ~ST0_IC2;
@@ -275,7 +275,7 @@ static int ReadST3( core_crocods_t *core, int val )
         core->ST3 |= ST3_RY;
     else
         core->ST3 &= ~ST3_RY;
-    
+
     return( core->ST3 );
 }
 
@@ -299,7 +299,7 @@ static int Specify( core_crocods_t *core, int val )
 {
     if ( core->etat++ == 1 )
         return( 0 );
-    
+
     core->etat = val = 0;
     core->Status &= ~STATUS_CB & ~STATUS_DIO;
     return( 0 );
@@ -330,26 +330,26 @@ static int ReadID( core_crocods_t *core, int val )
             core->Status |= STATUS_DIO;
             core->Inter = 1;
             break;
-            
+
         case 2 :
             return( 0 /*ST0*/ );
-            
+
         case 3 :
             return( core->ST1 );
-            
+
         case 4 :
             return( core->ST2 );
-            
+
         case 5 :
             ReadCHRN(core);
             return( core->C );
-            
+
         case 6 :
             return( core->H );
-            
+
         case 7 :
             return( core->R );
-            
+
         case 8 :
             core->etat = 0;
             core->Status &= ~STATUS_CB & ~STATUS_DIO;
@@ -378,7 +378,7 @@ static int ReadID( core_crocods_t *core, int val )
 static int FormatTrack( core_crocods_t *core, int val )
 {
     //    Log( "Appel fonction FDC format", LOG_DEBUG );
-    
+
     core->etat = val = 0;
     core->Status &= ~STATUS_CB & ~STATUS_DIO;
     return( 0 );
@@ -427,7 +427,7 @@ static void ChangeCurrTrack( core_crocods_t *core, int newTrack )
 {
     uint32_t Pos = 0;
     int t, s;
-    
+
     if ( ! core->Infos.DataSize )
     {
         memcpy( &core->CurrTrackDatasDSK, core->ImgDsk, sizeof( core->CurrTrackDatasDSK ) );
@@ -435,20 +435,20 @@ static void ChangeCurrTrack( core_crocods_t *core, int newTrack )
         {
             for ( s = 0; s < core->CurrTrackDatasDSK.NbSect; s++ )
                 Pos += core->CurrTrackDatasDSK.Sect[ s ].SectSize;
-            
+
             Pos += sizeof( core->CurrTrackDatasDSK );
             memcpy( &core->CurrTrackDatasDSK, &core->ImgDsk[ Pos ], sizeof( core->CurrTrackDatasDSK ) );
         }
     }
     else
         Pos += core->Infos.DataSize * newTrack;
-    
+
     memcpy( &core->CurrTrackDatasDSK, &core->ImgDsk[ Pos ], sizeof( core->CurrTrackDatasDSK ) );
-    
+
     core->PosData = Pos + sizeof( core->CurrTrackDatasDSK );
     core->IndexSecteur = 0;
     ReadCHRN(core);
-    
+
     if ( ! newTrack )
         core->ST3 |= ST3_T0;
     else
@@ -480,7 +480,7 @@ static int MoveTrack( core_crocods_t *core, int val )
             SetST0(core);
             core->Status |= STATUS_NDM;
             break;
-            
+
         case 2 :
             ChangeCurrTrack( core, core->C = val );
             core->etat = 0;
@@ -538,35 +538,35 @@ static int MoveTrack0( core_crocods_t *core, int val )
  ********************************************************** !0! ****************/
 static int ReadData( core_crocods_t *core, int val )
 {
-    
-    
+
+
     switch( core->etat++ )
     {
         case 1 :
             core->Drive = val;
             SetST0(core);
             break;
-            
+
         case 2 :
             core->C = val;
             break;
-            
+
         case 3 :
             core->H = val;
             break;
-            
+
         case 4 :
             core->R = val;
             break;
-            
+
         case 5 :
             core->N = val;
             break;
-            
+
         case 6 :
             core->EOT = val;
             break;
-            
+
         case 7 :
             core->updRsect = RechercheSecteur( core, core->R, &core->updRnewPos );
             if (core->updRsect!=-1) {
@@ -577,11 +577,11 @@ static int ReadData( core_crocods_t *core, int val )
                     core->updRcntdata = core->updRnewPos;
             }
             break;
-            
+
         case 8 :
             core->Status |= STATUS_DIO | STATUS_NDM;
             break;
-            
+
         case 9 :
             if ( ! ( core->ST0 & ST0_IC1 ) )
             {
@@ -598,25 +598,25 @@ static int ReadData( core_crocods_t *core, int val )
             }
             core->Status &= ~STATUS_NDM;
             return( 0 );
-            
+
         case 10 :
             return( core->ST0 );
-            
+
         case 11 :
             return( core->ST1 | ST1_EN );       // ### ici PB suivant logiciels... ###
-            
+
         case 12 :
             return(core-> ST2 );
-            
+
         case 13 :
             return( core->C );
-            
+
         case 14 :
             return( core->H );
-            
+
         case 15 :
             return( core->R );
-            
+
         case 16 :
             core->etat = 0;
             core->Status &= ~STATUS_CB & ~STATUS_DIO;
@@ -643,39 +643,39 @@ static int ReadData( core_crocods_t *core, int val )
  ********************************************************** !0! ****************/
 static int WriteData( core_crocods_t *core, int val )
 {
-    
-    
+
+
     switch( core->etat++ )
     {
         case 1 :
             core->Drive = val;
             SetST0(core);
             break;
-            
+
         case 2 :
             core->C = val;
             break;
-            
+
         case 3 :
             core->H = val;
             break;
-            
+
         case 4 :
             core->R = val;
             break;
-            
+
         case 5 :
             core->N = val;
             break;
-            
+
         case 6 :
             core->EOT = val;
             break;
-            
+
         case 7 :
             core->updWsect = RechercheSecteur( core, core->R, &core->updWnewPos );
             if (core->updWsect!=-1) {
-                
+
                 core->updWTailleSect = 128 << core->CurrTrackDatasDSK.Sect[ core->updWsect ].N;
                 if ( ! core->updWnewPos )
                     core->updWcntdata = ( core->updWsect * core->CurrTrackDatasDSK.SectSize ) << 8;
@@ -683,11 +683,11 @@ static int WriteData( core_crocods_t *core, int val )
                     core->updWcntdata = core->updWnewPos;
             }
             break;
-            
+
         case 8 :
             core->Status |= STATUS_DIO | STATUS_NDM;
             break;
-            
+
         case 9 :
             if ( ! ( core->ST0 & ST0_IC1 ) )
             {
@@ -705,28 +705,28 @@ static int WriteData( core_crocods_t *core, int val )
             }
             core->Status &= ~STATUS_NDM;
             return( 0 );
-            
+
         case 10 :
             if ( ! ( core->ST0 & ST0_IC1 ) )
                 core->FlagWrite = 1;
-            
+
             return( core->ST0 );
-            
+
         case 11 :
             return( core->ST1 );
-            
+
         case 12 :
             return( core->ST2 );
-            
+
         case 13 :
             return( core->C );
-            
+
         case 14 :
             return( core->H );
-            
+
         case 15 :
             return( core->R );
-            
+
         case 16 :
             core->etat = 0;
             core->Status &= ~STATUS_CB & ~STATUS_DIO;
@@ -755,7 +755,7 @@ int ReadUPD( core_crocods_t *core, int port )
 {
     if ( port & 1 )
         return( core->fct( core, port ) );
-    
+
     return( core->Status );
 }
 
@@ -778,7 +778,7 @@ int ReadUPD( core_crocods_t *core, int port )
 void WriteUPD( core_crocods_t *core, int port, int val )
 {
     core->DriveBusy=10; // Number of frame to display
-    
+
     if ( port == 0xFB7F )
     {
         if ( core->etat )
@@ -793,63 +793,63 @@ void WriteUPD( core_crocods_t *core, int port, int val )
                     // Specify
                     core->fct = Specify;
                     break;
-                    
+
                 case 0x04 :
                     // Lecture ST3
                     core->fct = ReadST3;
                     break;
-                    
+
                 case 0x05 :
                     // Ecriture données
                     core->fct = WriteData;
                     break;
-                    
+
                 case 0x06 :
                     // Lecture données
                     core->fct = ReadData;
                     break;
-                    
+
                 case 0x07 :
                     // Déplacement tête piste 0
                     //                    Status |= STATUS_NDM;
                     core->fct = MoveTrack0;
                     break;
-                    
+
                 case 0x08 :
                     // Lecture ST0, track
                     core->Status |= STATUS_DIO;
                     core->fct = ReadST0;
                     break;
-                    
+
                 case 0x09 :
                     // Ecriture données
                     core->fct = WriteData;
                     break;
-                    
+
                 case 0x0A :
                     // Lecture champ ID
                     core->fct = ReadID;
                     break;
-                    
+
                 case 0x0C :
                     // Lecture données
                     core->fct = ReadData;
                     break;
-                    
+
                 case 0x0D :
                     // Formattage piste
                     core->fct = FormatTrack;
                     break;
-                    
+
                 case 0x0F :
                     // Déplacement tête
                     core->fct = MoveTrack;
                     break;
-                    
+
                 case 0x11 :
                     core->fct = Scan;
                     break;
-                    
+
                 default :
                     core->Status |= STATUS_DIO;
                     core->fct = Rien;
@@ -887,7 +887,7 @@ void ResetUPD( core_crocods_t *core )
     core->Busy = 0;
     core->Inter = 0;
     core->etat = 0;
-    
+
     core->fct = Rien;
 }
 
@@ -952,7 +952,7 @@ void SetDiskUPD( core_crocods_t *core, char * n )
 {
     /*
      FILE * handle;
-     
+
      EjectDiskUPD();
      NomFic = n;
      handle = fopen( NomFic, "rb" );
@@ -960,7 +960,7 @@ void SetDiskUPD( core_crocods_t *core, char * n )
      LongFic = ftell(handle) - sizeof(Infos);
      ImgDsk = (u8*)MyAlloc(dsksize, "UPD Disk");
      FAT_fseek(handle,0,SEEK_SET);
-     
+
      if ( handle )
      {
      fread( &Infos, sizeof( Infos ), 1, handle );
@@ -1016,7 +1016,7 @@ int GetPosData( u8 *imgDsk, int track, int sect, char SectPhysique ) {
     CPCEMUTrack * tr = ( CPCEMUTrack * )&imgDsk[ Pos ];
     short SizeByte;
     int t;
-    
+
     for ( t = 0; t <= track; t++ ) {
         int s;
         Pos += sizeof( CPCEMUTrack );
@@ -1040,12 +1040,12 @@ int GetPosData( u8 *imgDsk, int track, int sect, char SectPhysique ) {
 int GetMinSect( u8 *imgDsk ) {
     int Sect = 0x100;
     int s;
-    
+
     CPCEMUTrack * tr = ( CPCEMUTrack * )&imgDsk[ 0 ];
     for ( s = 0; s < tr->NbSect; s++ )
         if ( Sect > tr->Sect[ s ].R )
             Sect = tr->Sect[ s ].R;
-    
+
     return( Sect );
 }
 
@@ -1057,40 +1057,40 @@ void LireDiskMem( core_crocods_t *core, u8 *rom, u32 romsize, char *autofile)
     int j,pos;
     char usefile[256];
     char filename[256];
-    
+
     autofile[0]=0;
-    
+
     char isOk = 0;
-    
-    isOk = ( (!memcmp(rom, "MV - CPCEMU", 11)) || (!memcmp(rom,"EXTENDED", 8)) );
-    
+
+    isOk = ( (!memcmp(rom, "MV - CPC", 8)) || (!memcmp(rom,"EXTENDED", 8)) );
+
     if (isOk == 0) {
         return;
     }
-    
+
     EjectDiskUPD(core);
-    
+
     core->LongFic=(int)romsize-sizeof(core->Infos);
-    
+
     memcpy(&core->Infos, rom, sizeof(core->Infos));
     memcpy(core->ImgDsk, rom+sizeof(core->Infos), core->LongFic);
-    
+
     core->Image=1;
     core->FlagWrite=0;
-    
+
     ChangeCurrTrack(core, 0);  // Met a jour posdata
 
     if (autofile!=NULL) {
         usefile[0]=0;
-        
+
         pos = core->PosData;
-        
+
         int NumDir;
-        
+
         printf("First pos: %d\n", pos);
-        
+
         for(NumDir=0;NumDir<64;NumDir++) {
-            
+
             static StDirEntry Dir;
             int MinSect = GetMinSect(core->ImgDsk);
             int s = ( NumDir >> 4 ) + MinSect;
@@ -1098,29 +1098,29 @@ void LireDiskMem( core_crocods_t *core, u8 *rom, u32 romsize, char *autofile)
             if ( MinSect == 1 ) {
                 t = 1;
             }
-            
+
             pos = ( ( NumDir & 15 ) << 5 ) + GetPosData(  core->ImgDsk, t, s, 1 );
-            
+
             if ((pos<0) || (pos + sizeof( StDirEntry ) >=1024*1024)) {
                 printf("Error when reading");
                 break;
             }
-            
+
             memcpy( &Dir, &core->ImgDsk[pos], sizeof( StDirEntry ) );
-            
+
             char ext[4];
-            
+
             if ((Dir.User!=USER_DELETED) && (Dir.NumPage==0)) {
-                
+
                 filename[0]=0;
                 ext[0]=0;
-                
+
                 for (j=0;j<8;j++) {
                     filename[j] = Dir.Nom[j] & 0x7F;
                     if (filename[j]==32) filename[j]=0;
                 }
                 filename[8]=0;
-                
+
                 for (j=0;j<3;j++) {
                     ext[j]  = Dir.Ext[j] & 0x7F;
                     if (ext[j]==32) ext[j]=0;
@@ -1130,24 +1130,24 @@ void LireDiskMem( core_crocods_t *core, u8 *rom, u32 romsize, char *autofile)
                     strcat(filename, ".");
                     strcat(filename,ext);
                 }
-                
+
                 if (filename[0]!=0) {
-                    
+
                     if ( (usefile[0]==0) || (!strcasecmp(ext,"bas")) ) {
                         strcpy(usefile, filename);
                     }
-                    
+
                     printf("%s %s\n", filename, usefile);
                 }
             }
-            
+
         }
-        
+
         if (usefile[0]!=0) {
             strcpy(autofile, usefile);
         }
     }
-    
-    printf("End of dir");
-    
+
+    printf("End of dir\n");
+
 }

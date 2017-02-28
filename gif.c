@@ -498,7 +498,7 @@ s16 ReadScreenDesc(u32 *w, u32 *h, s16 *ColorRez, s16 *FillColor, u16 *NumColors
 	}
 
 	*w = (u32)(Buffer[6] | Buffer[7] << 8);
-	*h = (u32)(Buffer[8] | Buffer[9] << 9);
+	*h = (u32)(Buffer[8] | Buffer[9] << 8);
 	NumPlanes = (s16)((Buffer[10] & 0x0F) + 1);
 
 	/* bit 3 should be 0 in rev 87a */
@@ -552,6 +552,7 @@ s16 ReadImageDesc(s16 *LeftEdge, s16 *TopEdge, s16 *Width, s16 *Height, s16 *Int
 	*TopEdge = (s16)(Buffer[2] | Buffer[3] << 8);
 	*Width = (s16)(Buffer[4] | Buffer[5] << 8);
 	*Height = (s16)(Buffer[6] | Buffer[7] << 8);
+
 	NumPlanes = (s16)((Buffer[8] & 0x0F) + 1);
 	*NumColors = (s16)(1 << NumPlanes);
 
