@@ -30,21 +30,23 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
-    /** @brief Ecriture d'un registre du VGA
-     *
-     *  @param core The core.
-     *  @param port
-     *  @param val
-     *  @return Void.
-     */
-    void WriteVGA( core_crocods_t *core, u16 port, u8 val );
-    void WriteROM( core_crocods_t *core, int val );
-    void AddRom(core_crocods_t *core, const char *rom,int i);
-    
-    BOOL InitMemCPC(core_crocods_t *core, const char *cpc6128_bin, const char *romdisc_bin);
-    
-    
+
+/** @brief Ecriture d'un registre du VGA
+ *
+ *  @param core The core.
+ *  @param port
+ *  @param val
+ *  @return Void.
+ */
+void WriteVGA( core_crocods_t *core, u16 port, u8 val );
+void WriteROM( core_crocods_t *core, int val );
+void AddRom(core_crocods_t *core, const char *rom,int i);
+
+BOOL InitMemCPC(core_crocods_t *core, const char *cpc6128_bin, const char *romdisc_bin);
+
+void VGA_Interrupt(core_crocods_t *core);
+void VGA_Update(core_crocods_t *core);
+
 #ifdef __cplusplus
 }
 #endif
